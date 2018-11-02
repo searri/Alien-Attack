@@ -1,19 +1,21 @@
-# CSCI 2113.11 - Fall 2017 Project 2 (100 pts) - Due December 4 at 11:59PM
+# CSCI 2113.11 - Fall 2018 Project 2 (100 pts) - Due December 6 at 11:59PM
 
 
 ## Name: [Your Name]
 
 ## GWID: [GWID]
 
-## Instructions:
+## Instructions
+
 Clone this repository and develop the Alien Attack game on your own. Do not copy any additional source code from the Internet other than the code from the Project 2 repository. Use the Project 2 documentation on Blackboard as your requirements. 
 
 Note: The Project 2 requirements may change during the development of the project based on student feedback.
 
-## Comments and Notes:
+## Comments and Notes
+
 [Filled in by student.]
 
-## Grading Rubric:
+## Grading Rubric
 
 Project details | Points | Score
 ---|:---:|:---:
