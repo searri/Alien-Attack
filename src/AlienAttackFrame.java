@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 public class AlienAttackFrame extends JFrame
 {
+    static final long serialVersionUID = 1L;
    
    public AlienAttackFrame()
    {

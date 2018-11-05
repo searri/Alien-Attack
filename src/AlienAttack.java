@@ -24,6 +24,7 @@ public class AlienAttack
    private void createAndShowGUI()
    {
       AlienAttackFrame aaFrame = new AlienAttackFrame();
+      aaFrame.setVisible(true);
    }
    
    /**
