@@ -15,7 +15,7 @@ public class AlienAttack {
     }
 
     public AlienAttack() {
-
+        
     }
 
     private void createAndShowGUI() {
@@ -26,8 +26,7 @@ public class AlienAttack {
     /**
     * @param args
     */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         instance = new AlienAttack();
         
         SwingUtilities.invokeLater(new Runnable() {
