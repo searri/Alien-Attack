@@ -16,8 +16,14 @@ public class AlienAttackFrame extends JFrame {
         setTitle("Alien Attack [Alpha]");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(900, 900);
-        // pack();
-        graphicsPanel = new AlienGraphicsPanel();   
+        graphicsPanel = new AlienGraphicsPanel();
+        getContentPane().setLayout(new GridBagLayout());
+        gc = new GridBagConstraints();
+        gc.gridx = 0;   //(0,0) in grid
+        gc.gridy = 0;
+        // gc.insets = new Insets(2, 2, 2, 2); //inset of 2 on all sides of grid cell
+        gc.fill = GridBagConstraints.BOTH;
+        getContentPane().add(graphicsPanel, gc);   
     }
 
 }

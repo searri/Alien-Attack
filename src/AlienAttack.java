@@ -23,9 +23,6 @@ public class AlienAttack {
         aaFrame.setVisible(true);
     }
 
-    /**
-    * @param args
-    */
     public static void main(String[] args) {
         instance = new AlienAttack();
         
