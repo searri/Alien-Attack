@@ -15,13 +15,17 @@ public class AlienAttackFrame extends JFrame {
     private JButton leftButton;
     private JButton rightButton;
     private JPanel controlPanel;
+    private JButton startButton;
+    private JButton pauseButton;
+    private JButton endButton;
+    private JPanel optionPanel;
     
     public AlienAttackFrame() {
         readConfigFile();
 
-        //Buttons - initialize and add
-        leftButton = new JButton("Left");
-        rightButton = new JButton("Right");
+        //Controls - initialize and add
+        leftButton = new JButton("< LEFT");
+        rightButton = new JButton("RIGHT >");
         ControlListener controlsListener = new ControlListener();
         controlPanel = new JPanel();
         leftButton.addActionListener(controlsListener);
@@ -30,6 +34,15 @@ public class AlienAttackFrame extends JFrame {
         controlPanel.add(leftButton);
         controlPanel.add(rightButton);
 
+        //Options - initialize and add
+        startButton = new JButton("Start");
+        pauseButton = new JButton("Pause");
+        endButton = new JButton("End");
+        optionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        optionPanel.add(startButton);
+        optionPanel.add(pauseButton);
+        optionPanel.add(endButton);
+
         //Initialize graphics panel
         graphicsPanel = new AlienGraphicsPanel(gameFrameSize);
 
@@ -37,6 +50,7 @@ public class AlienAttackFrame extends JFrame {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(graphicsPanel, BorderLayout.CENTER);   
         getContentPane().add(controlPanel, BorderLayout.SOUTH);
+        getContentPane().add(optionPanel, BorderLayout.NORTH);
 
         //Housekeeping
         setTitle("Alien Attack [Alpha]");
