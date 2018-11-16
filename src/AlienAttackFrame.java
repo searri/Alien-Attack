@@ -6,24 +6,55 @@
  */
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class AlienAttackFrame extends JFrame {
     static final long serialVersionUID = 1L;
+    private static int gameFrameSize = 900;
     private AlienGraphicsPanel graphicsPanel;
-    private GridBagConstraints gc;
+    private JButton leftButton;
+    private JButton rightButton;
+    private JPanel controlPanel;
     
     public AlienAttackFrame() {
+        //Buttons - initialize and add
+        leftButton = new JButton("Left");
+        rightButton = new JButton("Right");
+        ControlListener controlsListener = new ControlListener();
+        controlPanel = new JPanel();
+        leftButton.addActionListener(controlsListener);
+        rightButton.addActionListener(controlsListener);
+        controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        controlPanel.add(leftButton);
+        controlPanel.add(rightButton);
+
+        //Initialize graphics panel
+        graphicsPanel = new AlienGraphicsPanel(gameFrameSize);
+
+        //Add panels to main frame
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(graphicsPanel, BorderLayout.CENTER);   
+        getContentPane().add(controlPanel, BorderLayout.SOUTH);
+
+        //Housekeeping
         setTitle("Alien Attack [Alpha]");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(900, 900);
-        graphicsPanel = new AlienGraphicsPanel();
-        getContentPane().setLayout(new GridBagLayout());
-        gc = new GridBagConstraints();
-        gc.gridx = 0;   //(0,0) in grid
-        gc.gridy = 0;
-        // gc.insets = new Insets(2, 2, 2, 2); //inset of 2 on all sides of grid cell
-        gc.fill = GridBagConstraints.BOTH;
-        getContentPane().add(graphicsPanel, gc);   
+        pack();
+    }
+
+    public class ControlListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            Object obj = e.getSource();
+            if(obj == leftButton) {
+                System.out.println("LEFT");
+            } else if(obj == rightButton) {
+                System.out.println("RIGHT");
+            } else {
+                System.out.println("ERROR");
+            }
+        }
+
     }
 
 }
