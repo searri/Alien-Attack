@@ -14,10 +14,6 @@ public class AlienAttack {
         return instance;
     }
 
-    public AlienAttack() {
-        
-    }
-
     private void createAndShowGUI() {
         AlienAttackFrame aaFrame = new AlienAttackFrame();
         aaFrame.setVisible(true);
@@ -33,4 +29,5 @@ public class AlienAttack {
         });
 
     }
+
 }

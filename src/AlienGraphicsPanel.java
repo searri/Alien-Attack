@@ -16,6 +16,7 @@ public class AlienGraphicsPanel extends JPanel {
         setLayout(null);
         player = new AlienAttackPlayer(90, frameSize);
         add(player);
+        add(new AlienAttackAlien(90));
     }
 
 }

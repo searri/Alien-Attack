@@ -10,13 +10,15 @@ import java.awt.event.*;
 
 public class AlienAttackFrame extends JFrame {
     static final long serialVersionUID = 1L;
-    private static int gameFrameSize = 900;
+    private int gameFrameSize;
     private AlienGraphicsPanel graphicsPanel;
     private JButton leftButton;
     private JButton rightButton;
     private JPanel controlPanel;
     
     public AlienAttackFrame() {
+        readConfigFile();
+
         //Buttons - initialize and add
         leftButton = new JButton("Left");
         rightButton = new JButton("Right");
@@ -40,6 +42,12 @@ public class AlienAttackFrame extends JFrame {
         setTitle("Alien Attack [Alpha]");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
+    }
+
+    public void readConfigFile() {
+
+        gameFrameSize = 900;
+
     }
 
     public class ControlListener implements ActionListener {
