@@ -7,6 +7,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 public class AlienAttackFrame extends JFrame {
     static final long serialVersionUID = 1L;
@@ -19,9 +20,15 @@ public class AlienAttackFrame extends JFrame {
     private JButton pauseButton;
     private JButton endButton;
     private JPanel optionPanel;
+    private Queue<Integer> commandQueue;    //0 - left, 1 - right
     
     public AlienAttackFrame() {
+        
+        //Housekeeping
         readConfigFile();
+        setTitle("Alien Attack [Alpha]");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        commandQueue = new LinkedList<Integer>();
 
         //Controls - initialize and add
         leftButton = new JButton("< LEFT");
@@ -52,9 +59,6 @@ public class AlienAttackFrame extends JFrame {
         getContentPane().add(controlPanel, BorderLayout.SOUTH);
         getContentPane().add(optionPanel, BorderLayout.NORTH);
 
-        //Housekeeping
-        setTitle("Alien Attack [Alpha]");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack();
     }
 
@@ -69,9 +73,9 @@ public class AlienAttackFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             Object obj = e.getSource();
             if(obj == leftButton) {
-                System.out.println("LEFT");
+                commandQueue.add(0);
             } else if(obj == rightButton) {
-                System.out.println("RIGHT");
+                commandQueue.add(1);
             } else {
                 System.out.println("ERROR");
             }

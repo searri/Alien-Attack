@@ -10,10 +10,10 @@ public class AlienAttackAlien extends JComponent {
     static final long serialVersionUID = 1L;
     private int alienSize;
 
-    public AlienAttackAlien(int startSize) {
+    public AlienAttackAlien(int startSize, int startX, int startY) {
         alienSize = startSize;
         setSize(alienSize, alienSize);
-        setLocation(0, 0);
+        setLocation(startX, startY);
     }
 
     @Override
