@@ -29,8 +29,6 @@ public class AlienAttackFrame extends JFrame {
     private int playerSpeed;                //how far the player moves per cycle
     private int increaseInterval;           //how many cycles until difficulty increases
     private int increaseSize;               //how many more aliens spawn when difficulty increases
-    private int startMaxAliens;             //starting max number of aliens
-    private int startMinAliens;             //starting min number of aliens
     private int largeAlienValue;            //point values for each alien size
     private int medAlienValue;
     private int smallAlienValue;
@@ -108,11 +106,12 @@ public class AlienAttackFrame extends JFrame {
             AlienGraphicsPanel.smallAlienSpeed = Integer.parseInt(configSettings.get(4));
             playerSpeed = Integer.parseInt(configSettings.get(5));
             increaseInterval = Integer.parseInt(configSettings.get(6));
-            startMaxAliens = Integer.parseInt(configSettings.get(7));
-            startMinAliens = Integer.parseInt(configSettings.get(8));
-            largeAlienValue = Integer.parseInt(configSettings.get(9));
-            medAlienValue = Integer.parseInt(configSettings.get(10));
-            smallAlienValue = Integer.parseInt(configSettings.get(11));
+            increaseSize = Integer.parseInt(configSettings.get(7));
+            AlienGraphicsPanel.maxAliens = Integer.parseInt(configSettings.get(8));
+            AlienGraphicsPanel.minAliens = Integer.parseInt(configSettings.get(9));
+            largeAlienValue = Integer.parseInt(configSettings.get(10));
+            medAlienValue = Integer.parseInt(configSettings.get(11));
+            smallAlienValue = Integer.parseInt(configSettings.get(12));
 
         //catch various exceptions that could occur, inform the user, and then initialize variables to default values
         } catch(IOException e) {
@@ -133,8 +132,8 @@ public class AlienAttackFrame extends JFrame {
         playerSpeed = 40;
         increaseInterval = 20;
         increaseSize = 2;
-        startMaxAliens = 4;
-        startMinAliens = 1;
+        AlienGraphicsPanel.maxAliens = 4;
+        AlienGraphicsPanel.minAliens = 1;
         largeAlienValue = 50;
         medAlienValue = 25;
         smallAlienValue = 10;
@@ -200,6 +199,7 @@ public class AlienAttackFrame extends JFrame {
      * @see java.awt.event.ActionListener
      */
     public class GameEngine implements ActionListener {
+        private int cyclesElapsed = 0;
 
         @Override
         /**
@@ -207,6 +207,7 @@ public class AlienAttackFrame extends JFrame {
          * @param e ActionEvent triggered by the game clock
          */
         public void actionPerformed(ActionEvent e) {
+            cyclesElapsed++;    //increment cycles elapsed
 
             //PLAYER MOVEMENT - take the next commandQueue item (if it's empty, don't move the player)
             int currCommand;
@@ -222,8 +223,11 @@ public class AlienAttackFrame extends JFrame {
                 graphicsPanel.getPlayer().movePlayerRight(playerSpeed);
             }
 
-            //ALIEN MOVEMENT - move all aliens down
+            //ALIEN MOVEMENT - move all aliens down, generate more aliens
             graphicsPanel.moveAllAliensDown();
+            if((cyclesElapsed % 40) == 0) {
+                graphicsPanel.addRandomAliens();
+            }
 
             //Update appearance of game screen
             AlienAttackFrame.this.repaint();

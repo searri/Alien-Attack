@@ -6,6 +6,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AlienGraphicsPanel extends JPanel {
     static final long serialVersionUID = 1L;
@@ -15,6 +16,8 @@ public class AlienGraphicsPanel extends JPanel {
     static int largeAlienSpeed;         //how far each alien size moves in a cycle
     static int medAlienSpeed;
     static int smallAlienSpeed;
+    static int maxAliens;               //starting max number of aliens
+    static int minAliens;               //starting min number of aliens
 
     private AlienAttackPlayer player;
     private ArrayList<AlienAttackAlien> aliensOnScreen;
@@ -28,7 +31,6 @@ public class AlienGraphicsPanel extends JPanel {
         gameScreenSize = frameSize;
         player = new AlienAttackPlayer(LARGE, frameSize);
         add(player);
-        addRandomAlien();
     }
 
     public AlienAttackPlayer getPlayer() {
@@ -61,10 +63,28 @@ public class AlienGraphicsPanel extends JPanel {
         }
     }
 
-    public void addRandomAlien() {
-        AlienAttackAlien lolz = new AlienAttackAlien(MEDIUM, 450, gameScreenSize);
-        add(lolz);
-        aliensOnScreen.add(lolz);
+    /**
+     * Add a random number of randomly defined aliens to the game screen
+     */
+    public void addRandomAliens() {
+        int aliensToGenerate = randomNumInRange(minAliens, maxAliens);  //how many aliens to generate this cycle
+        for(int i=0; i<aliensToGenerate; i++) {
+            int alienSize = randomNumInRange(1, 3);     //how big is the new alien
+            int location = randomNumInRange(0, gameScreenSize);     //where is it
+            AlienAttackAlien newAlien = new AlienAttackAlien(alienSize*30, location, gameScreenSize);   //create alien
+            add(newAlien);  //add to screen
+            aliensOnScreen.add(newAlien);       //add to list
+        }
     }
 
+    /**
+     * Simple method to create a random integer within a set range (inclusive)
+     * @param min Minimum number to create
+     * @param max Maximum number to create
+     * @return random number between min and max
+     */
+    public int randomNumInRange(int min, int max) {
+		Random rando = new Random();
+		return rando.nextInt((max - min) + 1) + min;
+    }
 }
