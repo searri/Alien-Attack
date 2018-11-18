@@ -34,7 +34,7 @@ public class AlienAttackFrame extends JFrame {
     private int increaseSize;               //how many more aliens spawn when difficulty increases
     private int startMaxAliens;             //starting max number of aliens
     private int startMinAliens;             //starting min number of aliens
-    private int largeAlienValue;            //point values for each alien class
+    private int largeAlienValue;            //point values for each alien size
     private int medAlienValue;
     private int smallAlienValue;
 
@@ -52,7 +52,9 @@ public class AlienAttackFrame extends JFrame {
 
         //Controls - initialize and add
         leftButton = new JButton("< LEFT");
+        leftButton.setEnabled(false);   //game controls aren't enabled until START is pressed
         rightButton = new JButton("RIGHT >");
+        rightButton.setEnabled(false);
         ControlListener controlsListener = new ControlListener();
         controlPanel = new JPanel();
         leftButton.addActionListener(controlsListener);
@@ -65,6 +67,10 @@ public class AlienAttackFrame extends JFrame {
         startButton = new JButton("Start");
         pauseButton = new JButton("Pause");
         endButton = new JButton("End");
+        OptionsListener optionListener = new OptionsListener();
+        startButton.addActionListener(optionListener);
+        pauseButton.addActionListener(optionListener);
+        endButton.addActionListener(optionListener);
         optionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         optionPanel.add(startButton);
         optionPanel.add(pauseButton);
@@ -80,7 +86,6 @@ public class AlienAttackFrame extends JFrame {
         getContentPane().add(optionPanel, BorderLayout.NORTH);
 
         //Final housekeeping
-        gameTimer.start();
         pack();
     }
 
@@ -138,9 +143,13 @@ public class AlienAttackFrame extends JFrame {
         smallAlienValue = 10;
     }
 
-    //ActionListener for game controls
+    /**
+     * Inner class to take user input from LEFT and RIGHT buttons
+     * @see java.awt.event.ActionListener
+     */
     public class ControlListener implements ActionListener {
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             Object obj = e.getSource();
             if(obj == leftButton) {
@@ -154,13 +163,51 @@ public class AlienAttackFrame extends JFrame {
 
     }
 
-    //ActionListener to move elements around game screen
+    /**
+     * Inner class to start and stop the game clock when prompted by the user
+     * @see java.awt.event.ActionListener
+     */
+    public class OptionsListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Object obj = e.getSource();
+            if(obj == startButton) {
+                gameTimer.start();
+
+                //disable START and enable everything else
+                startButton.setEnabled(false);
+                pauseButton.setEnabled(true);
+                leftButton.setEnabled(true);
+                rightButton.setEnabled(true);
+            } else if(obj == pauseButton) {
+                gameTimer.stop();
+
+                //enable START and disable everything else
+                startButton.setEnabled(true);
+                pauseButton.setEnabled(false);
+                leftButton.setEnabled(false);
+                rightButton.setEnabled(false);
+            } else if(obj == endButton) {
+                gameTimer.stop();
+                System.out.println("GAME END");
+            } else {
+                System.out.println("ERROR");
+            }
+        }
+    }
+
+    
+    /**
+     * Inner class to handle moving game elements when triggered by clock
+     * @see java.awt.event.ActionListener
+     */
     public class GameEngine implements ActionListener {
 
+        @Override
         /**
          * Updates all game screen elements for one clock cycle
          * @param e ActionEvent triggered by the game clock
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
 
