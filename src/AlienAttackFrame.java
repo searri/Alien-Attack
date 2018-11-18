@@ -34,7 +34,7 @@ public class AlienAttackFrame extends JFrame {
     private int smallAlienValue;
 
     public AlienAttackFrame() {
-        
+
         //Housekeeping
         readConfigFile();
         gameFrameSize = 900;
@@ -227,6 +227,13 @@ public class AlienAttackFrame extends JFrame {
             graphicsPanel.moveAllAliensDown();
             if((cyclesElapsed % 40) == 0) {
                 graphicsPanel.addRandomAliens();
+            }
+
+            //GAME DIFFICULTY - check if it's time to increase game difficulty
+            if(cyclesElapsed%increaseInterval == 0) {
+                System.out.println(cyclesElapsed+": INCREASE DIFFICULTY");
+                graphicsPanel.increaseMaxAliens(increaseSize);
+                graphicsPanel.increaseMinAliens(increaseSize);
             }
 
             //Update appearance of game screen

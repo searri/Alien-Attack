@@ -16,8 +16,8 @@ public class AlienGraphicsPanel extends JPanel {
     static int largeAlienSpeed;         //how far each alien size moves in a cycle
     static int medAlienSpeed;
     static int smallAlienSpeed;
-    static int maxAliens;               //starting max number of aliens
-    static int minAliens;               //starting min number of aliens
+    static int maxAliens;               //max number of aliens
+    static int minAliens;               //min number of aliens
 
     private AlienAttackPlayer player;
     private ArrayList<AlienAttackAlien> aliensOnScreen;
@@ -35,6 +35,14 @@ public class AlienGraphicsPanel extends JPanel {
 
     public AlienAttackPlayer getPlayer() {
         return player;
+    }
+
+    public void increaseMaxAliens(int increaseAmt) {
+        maxAliens+=increaseAmt;
+    }
+
+    public void increaseMinAliens(int increaseAmt) {
+        minAliens+=increaseAmt;
     }
 
     /**
