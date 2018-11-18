@@ -10,12 +10,14 @@ public class AlienAttackPlayer extends JComponent {
     static final long serialVersionUID = 1L;
     private int playerSize;
     private int gameScreenSize;
+    private int maxXCoord;
 
     public AlienAttackPlayer(int startSize, int screenSize) {
         playerSize = startSize;
         gameScreenSize = screenSize;
+        maxXCoord = screenSize-startSize;
         setSize(playerSize, playerSize);
-        setLocation(calcXCoord(), calcYCoord());
+        setLocation(calcXStartCoord(), calcYStartCoord());
     }
 
     @Override
@@ -26,11 +28,39 @@ public class AlienAttackPlayer extends JComponent {
         g2d.fillOval(0, 0, playerSize, playerSize);
     }
 
-    public int calcXCoord() {
+    public int calcXStartCoord() {
         return (int)((gameScreenSize-playerSize)/2);
     }
 
-    public int calcYCoord() {
+    public int calcYStartCoord() {
         return (int)(gameScreenSize-5-playerSize);
+    }
+
+    public int getPlayerSize() {
+        return playerSize;
+    }
+
+    public void setPlayerSize(int newSize) {
+        playerSize = newSize;
+    }
+
+    public void movePlayerLeft(int howManyPixels) {
+        double currX = getLocation().getX();
+        currX-=howManyPixels;
+        if(currX<0) {
+            setLocation(0, (int)getLocation().getY());
+        } else {
+            setLocation((int)currX, (int)getLocation().getY());
+        }
+    }
+
+    public void movePlayerRight(int howManyPixels) {
+        double currX = getLocation().getX();
+        currX+=howManyPixels;
+        if(currX>maxXCoord) {
+            setLocation(maxXCoord, (int)getLocation().getY());
+        } else {
+            setLocation((int)currX, (int)getLocation().getY());
+        }
     }
 }

@@ -87,14 +87,19 @@ public class AlienAttackFrame extends JFrame {
     public void readConfigFile() {
 
         try {
+            //temporary ArrayList to store settings
             ArrayList <String> configSettings = new ArrayList<String>();
+            
+            //setup Scanner to read in config file from resources directory
             Scanner fileReader = new Scanner(new File("project-2-searri/src/resources/AlienAttack.properties"));
             while (fileReader.hasNextLine()) {
                 String line = fileReader.nextLine();
                 String[] data = line.split(" ");
-                configSettings.add(data[1]);
+                configSettings.add(data[1]);    //only add the numerical values to the ArrayList
             }
             fileReader.close();
+
+            //initialize member variables to the values read in from config file
             cycleTime = Integer.parseInt(configSettings.get(1));
             largeAlienStartSpeed = Integer.parseInt(configSettings.get(2));
             medAlienStartSpeed = Integer.parseInt(configSettings.get(3));
@@ -106,6 +111,8 @@ public class AlienAttackFrame extends JFrame {
             largeAlienValue = Integer.parseInt(configSettings.get(9));
             medAlienValue = Integer.parseInt(configSettings.get(10));
             smallAlienValue = Integer.parseInt(configSettings.get(11));
+
+        //catch various exceptions that could occur, inform the user, and then initialize variables to default values
         } catch(IOException e) {
             JOptionPane.showMessageDialog(this, "Could not access config file. Starting game with default values.");
             setDefaultValues();
@@ -115,6 +122,7 @@ public class AlienAttackFrame extends JFrame {
         }
     }
 
+    //simple method to initialize variables to game defaults (in case of error with config file)
     public void setDefaultValues() {
         cycleTime = 200;
         largeAlienStartSpeed = 20;
@@ -130,14 +138,15 @@ public class AlienAttackFrame extends JFrame {
         smallAlienValue = 10;
     }
 
+    //ActionListener for game controls
     public class ControlListener implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
             Object obj = e.getSource();
             if(obj == leftButton) {
-                commandQueue.add(0);
+                commandQueue.add(0);    //0: LEFT
             } else if(obj == rightButton) {
-                commandQueue.add(1);
+                commandQueue.add(1);    //1: RIGHT
             } else {
                 System.out.println("ERROR");
             }
@@ -145,23 +154,31 @@ public class AlienAttackFrame extends JFrame {
 
     }
 
+    //ActionListener to move elements around game screen
     public class GameEngine implements ActionListener {
 
+        /**
+         * Updates all game screen elements for one clock cycle
+         * @param e ActionEvent triggered by the game clock
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
         public void actionPerformed(ActionEvent e) {
+
+            //Player movement - take the next commandQueue item (if it's empty, don't move the player)
             int currCommand;
             try {
                 currCommand = commandQueue.remove();
-            } catch(NoSuchElementException i) {
+            } catch(NoSuchElementException i) { //.remove() throws this exception if Queue is empty
                 currCommand = 2;
             }
 
-            if(currCommand==0) {
-                System.out.println("MOVE LEFT");
-            } else if(currCommand==1) {
-                System.out.println("MOVE RIGHT");
-            } else {
-                System.out.println("DON'T MOVE");
+            if(currCommand==0) {            //O: LEFT
+                graphicsPanel.getPlayer().movePlayerLeft(playerSpeed);
+            } else if(currCommand==1) {     //1: RIGHT
+                graphicsPanel.getPlayer().movePlayerRight(playerSpeed);
             }
+
+            AlienAttackFrame.this.repaint();
         }
     }
 

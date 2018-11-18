@@ -21,4 +21,8 @@ public class AlienGraphicsPanel extends JPanel {
         add(new AlienAttackAlien(30, 200, 0));
     }
 
+    public AlienAttackPlayer getPlayer() {
+        return player;
+    }
+
 }
