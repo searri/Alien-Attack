@@ -23,15 +23,16 @@ public class AlienAttackFrame extends JFrame {
     private JButton endButton;
     private JPanel optionPanel;
     private Timer gameTimer;
-
     private Queue<Integer> commandQueue;    //0 - left, 1 - right, else - do nothing
+    private JTextField scoreBoard;
+    private JTextField scoreLabel;
+    private JPanel upperFields;
+
+    //CUSTOMIZABLE VALUES (read in via config file)
     private int cycleTime;                  //how often the game clock cycles (milliseconds)
     private int playerSpeed;                //how far the player moves per cycle
     private int increaseInterval;           //how many cycles until difficulty increases
     private int increaseSize;               //how many more aliens spawn when difficulty increases
-    private int largeAlienValue;            //point values for each alien size
-    private int medAlienValue;
-    private int smallAlienValue;
 
     public AlienAttackFrame() {
 
@@ -71,19 +72,36 @@ public class AlienAttackFrame extends JFrame {
         optionPanel.add(pauseButton);
         optionPanel.add(endButton);
 
+        //Scoreboard - initialize
+        scoreBoard = new JTextField("");
+        scoreLabel = new JTextField("- SCORE -");
+        scoreBoard.setHorizontalAlignment(JTextField.CENTER);
+        scoreLabel.setHorizontalAlignment(JTextField.CENTER);
+        scoreBoard.setEditable(false);
+        scoreLabel.setEditable(false);
+
         //Initialize graphics panel
         graphicsPanel = new AlienGraphicsPanel(gameFrameSize);
+
+        //Initialize upper info panel
+        upperFields = new JPanel(new BorderLayout());
+        upperFields.add(optionPanel, BorderLayout.SOUTH);
+        upperFields.add(scoreBoard, BorderLayout.CENTER);
+        upperFields.add(scoreLabel, BorderLayout.NORTH);
 
         //Add panels to main frame
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(graphicsPanel, BorderLayout.CENTER);   
         getContentPane().add(controlPanel, BorderLayout.SOUTH);
-        getContentPane().add(optionPanel, BorderLayout.NORTH);
+        getContentPane().add(upperFields, BorderLayout.NORTH);
 
         //Final housekeeping
         pack();
     }
 
+    /**
+     * Reads a text config file to set custom options for the game
+     */
     public void readConfigFile() {
 
         try {
@@ -109,9 +127,9 @@ public class AlienAttackFrame extends JFrame {
             increaseSize = Integer.parseInt(configSettings.get(7));
             AlienGraphicsPanel.maxAliens = Integer.parseInt(configSettings.get(8));
             AlienGraphicsPanel.minAliens = Integer.parseInt(configSettings.get(9));
-            largeAlienValue = Integer.parseInt(configSettings.get(10));
-            medAlienValue = Integer.parseInt(configSettings.get(11));
-            smallAlienValue = Integer.parseInt(configSettings.get(12));
+            AlienGraphicsPanel.largeAlienValue = Integer.parseInt(configSettings.get(10));
+            AlienGraphicsPanel.medAlienValue = Integer.parseInt(configSettings.get(11));
+            AlienGraphicsPanel.smallAlienValue = Integer.parseInt(configSettings.get(12));
 
         //catch various exceptions that could occur, inform the user, and then initialize variables to default values
         } catch(IOException e) {
@@ -123,7 +141,9 @@ public class AlienAttackFrame extends JFrame {
         }
     }
 
-    //simple method to initialize variables to game defaults (in case of error with config file)
+    /**
+     * simple method to initialize variables to game defaults (in case of error with config file)
+     */
     public void setDefaultValues() {
         cycleTime = 200;
         AlienGraphicsPanel.largeAlienSpeed = 20;
@@ -134,9 +154,9 @@ public class AlienAttackFrame extends JFrame {
         increaseSize = 2;
         AlienGraphicsPanel.maxAliens = 4;
         AlienGraphicsPanel.minAliens = 1;
-        largeAlienValue = 50;
-        medAlienValue = 25;
-        smallAlienValue = 10;
+        AlienGraphicsPanel.largeAlienValue = 50;
+        AlienGraphicsPanel.medAlienValue = 25;
+        AlienGraphicsPanel.smallAlienValue = 10;
     }
 
     /**
@@ -236,7 +256,11 @@ public class AlienAttackFrame extends JFrame {
                 graphicsPanel.increaseMinAliens(increaseSize);
             }
 
-            //Update appearance of game screen
+            //SCORE - update score display
+            int currScore = graphicsPanel.getScore();
+            scoreBoard.setText(Integer.toString(currScore));
+
+            //Refresh game screen
             AlienAttackFrame.this.repaint();
         }
     }

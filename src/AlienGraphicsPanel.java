@@ -13,17 +13,24 @@ public class AlienGraphicsPanel extends JPanel {
     static int LARGE = 90;              //pixel dimensions for each alien size
     static int MEDIUM = 60;
     static int SMALL = 30;
+
+    //CUSTOMIZABLE OPTIONS - read from config file
     static int largeAlienSpeed;         //how far each alien size moves in a cycle
     static int medAlienSpeed;
     static int smallAlienSpeed;
     static int maxAliens;               //max number of aliens
     static int minAliens;               //min number of aliens
+    static int largeAlienValue;         //point values for each alien size
+    static int medAlienValue;
+    static int smallAlienValue;
 
     private AlienAttackPlayer player;
     private ArrayList<AlienAttackAlien> aliensOnScreen;
     private int gameScreenSize;
+    private int score;
 
     public AlienGraphicsPanel(int frameSize) {
+        score = 0;
         setPreferredSize(new Dimension(frameSize, frameSize));
         aliensOnScreen = new ArrayList<AlienAttackAlien>();
         setBackground(Color.BLACK);
@@ -64,9 +71,20 @@ public class AlienGraphicsPanel extends JPanel {
                 keepAlien = false;  //this must be set to satisfy the Java compiler
                 System.exit(0);     //exit immediately, there was some kind of major error
             }
-            if(!keepAlien) {
+            if(!keepAlien) {        //if the Alien went offscreen, update the score
+
+                //remove Alien from all records to be garbage collected
                 remove(currAlien);
                 aliensOnScreen.remove(i);
+
+                //update score depending on Alien size
+                if(alienSize==LARGE) {
+                    score+=largeAlienValue;
+                } else if(alienSize==MEDIUM) {
+                    score+=medAlienValue;
+                } else if(alienSize==SMALL) {
+                    score+=smallAlienValue;
+                }
             }
         }
     }
@@ -95,4 +113,9 @@ public class AlienGraphicsPanel extends JPanel {
 		Random rando = new Random();
 		return rando.nextInt((max - min) + 1) + min;
     }
+
+    public int getScore() {
+        return score;
+    }
+
 }
