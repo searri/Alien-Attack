@@ -27,12 +27,14 @@ public class AlienAttackFrame extends JFrame {
     private JTextField scoreBoard;
     private JTextField scoreLabel;
     private JPanel upperFields;
+    private AlienAttackMenu mainMenu;
 
     //CUSTOMIZABLE VALUES (read in via config file)
     private int cycleTime;                  //how often the game clock cycles (milliseconds)
     private int playerSpeed;                //how far the player moves per cycle
     private int increaseInterval;           //how many cycles until difficulty increases
     private int increaseSize;               //how many more aliens spawn when difficulty increases
+    private int spawnInterval;              //how many cycles until new aliens are spawned
 
     public AlienAttackFrame() {
 
@@ -89,11 +91,13 @@ public class AlienAttackFrame extends JFrame {
         upperFields.add(scoreBoard, BorderLayout.CENTER);
         upperFields.add(scoreLabel, BorderLayout.NORTH);
 
+        //Initialize main menu
+        mainMenu = new AlienAttackMenu(gameFrameSize, this);
+
         //Add panels to main frame
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(graphicsPanel, BorderLayout.CENTER);   
+        getContentPane().add(mainMenu, BorderLayout.CENTER);   
         getContentPane().add(controlPanel, BorderLayout.SOUTH);
-        getContentPane().add(upperFields, BorderLayout.NORTH);
 
         //Final housekeeping
         pack();
@@ -130,6 +134,7 @@ public class AlienAttackFrame extends JFrame {
             AlienGraphicsPanel.largeAlienValue = Integer.parseInt(configSettings.get(10));
             AlienGraphicsPanel.medAlienValue = Integer.parseInt(configSettings.get(11));
             AlienGraphicsPanel.smallAlienValue = Integer.parseInt(configSettings.get(12));
+            spawnInterval = Integer.parseInt(configSettings.get(13));
 
         //catch various exceptions that could occur, inform the user, and then initialize variables to default values
         } catch(IOException e) {
@@ -157,6 +162,29 @@ public class AlienAttackFrame extends JFrame {
         AlienGraphicsPanel.largeAlienValue = 50;
         AlienGraphicsPanel.medAlienValue = 25;
         AlienGraphicsPanel.smallAlienValue = 10;
+        spawnInterval = 40;
+    }
+
+    /**
+     * In the center of the game frame, exchange the main menu for the game screen
+     */
+    public void closeMainMenu() {
+        remove(mainMenu);
+        getContentPane().add(graphicsPanel, BorderLayout.CENTER);
+        getContentPane().add(upperFields, BorderLayout.NORTH);
+        repaint();
+        pack();
+    }
+
+    /**
+     * In the center of the game frame, exchange the game screen for main menu
+     */
+    public void openMainMenu() {
+        remove(graphicsPanel);
+        getContentPane().remove(upperFields);
+        getContentPane().add(mainMenu, BorderLayout.CENTER);
+        repaint();
+        pack();
     }
 
     /**
@@ -247,7 +275,7 @@ public class AlienAttackFrame extends JFrame {
 
             //ALIEN MOVEMENT - move all aliens down, generate more aliens
             graphicsPanel.moveAllAliensDown();
-            if((cyclesElapsed % 40) == 0) {
+            if((cyclesElapsed % spawnInterval) == 0) {
                 graphicsPanel.addRandomAliens();
             }
 
@@ -264,7 +292,7 @@ public class AlienAttackFrame extends JFrame {
 
             //PLAYER HIT - test to see if player has been hit
             if(graphicsPanel.playerIsHit()) {
-                graphicsPanel.clearRespawnArea();
+                graphicsPanel.clearScreen();
                 if(graphicsPanel.getPlayer().shrinkPlayerSize()) {
                     gameTimer.stop();
                     System.out.println("Lol u ded");
