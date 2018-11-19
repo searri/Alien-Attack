@@ -123,24 +123,47 @@ public class AlienGraphicsPanel extends JPanel {
      * @return true if player has been hit
      */
     public boolean playerIsHit() {
+        //get the left, right, and top border coords of the player
         double playerLeftX = player.getLocation().getX();
         double playerRightX = player.getLocation().getX() + player.getPlayerSize();
         double playerY = player.getLocation().getY();
         for(int i=0; i<aliensOnScreen.size(); i++) {
+            //get the right, left, and bottom border coords of the alien
             int currAlienSize = aliensOnScreen.get(i).getAlienSize();
             double currAlienRightX = aliensOnScreen.get(i).getLocation().getX() + currAlienSize;
             double currAlienLeftX = aliensOnScreen.get(i).getLocation().getX();
             double currAlienY = aliensOnScreen.get(i).getLocation().getY() + currAlienSize;
 
+            //logic for a hit on the player's right side
             boolean rightHit = (playerLeftX > currAlienLeftX && playerLeftX < currAlienRightX && playerY < currAlienY);
+            //logic for a hit on the player's left side
             boolean leftHit = (playerRightX > currAlienLeftX && playerRightX < currAlienRightX && playerY < currAlienY);
+            //logic for a hit on top of the player, alien is bigger than player
             boolean topBigHit = (playerRightX < currAlienRightX && playerLeftX > currAlienLeftX && playerY < currAlienY);
+            //logic for a hit on top of the player, alien is smaller than player
             boolean topSmallHit = (playerRightX > currAlienRightX && playerLeftX < currAlienLeftX && playerY < currAlienY);
+            
+            //return true if any kind of hit was registered
             if(rightHit || leftHit || topBigHit || topSmallHit) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Removes any alien too close to the player to make respawning fair
+     */
+    public void clearRespawnArea() {
+        for(int i=0; i<aliensOnScreen.size(); i++) {
+            AlienAttackAlien currAlien = aliensOnScreen.get(i);
+            int currAlienSize = currAlien.getAlienSize();
+            double currAlienY = (currAlien.getLocation().getY() + currAlienSize);
+            if(currAlienY > (gameScreenSize-(LARGE*4))) {
+                remove(currAlien);
+                aliensOnScreen.remove(i);
+            }
+        }
     }
 
 }

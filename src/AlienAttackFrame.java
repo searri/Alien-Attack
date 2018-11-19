@@ -262,6 +262,7 @@ public class AlienAttackFrame extends JFrame {
 
             //PLAYER HIT - test to see if player has been hit
             if(graphicsPanel.playerIsHit()) {
+                graphicsPanel.clearRespawnArea();
                 if(graphicsPanel.getPlayer().shrinkPlayerSize()) {
                     gameTimer.stop();
                     System.out.println("Lol u ded");
