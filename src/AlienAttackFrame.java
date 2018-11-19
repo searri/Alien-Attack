@@ -85,6 +85,12 @@ public class AlienAttackFrame extends JFrame {
         //Initialize graphics panel
         graphicsPanel = new AlienGraphicsPanel(gameFrameSize);
 
+        controlPanel.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "moveLeft");
+        controlPanel.getActionMap().put("moveLeft", new ControlsLeft());
+
+        controlPanel.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
+        controlPanel.getActionMap().put("moveRight", new ControlsRight());
+
         //Initialize upper info panel
         upperFields = new JPanel(new BorderLayout());
         upperFields.add(optionPanel, BorderLayout.SOUTH);
@@ -101,6 +107,7 @@ public class AlienAttackFrame extends JFrame {
 
         //Final housekeeping
         pack();
+        controlPanel.requestFocus();
     }
 
     /**
@@ -207,6 +214,24 @@ public class AlienAttackFrame extends JFrame {
 
     }
 
+    public class ControlsLeft extends AbstractAction {
+        static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            commandQueue.add(0);
+        }
+    }
+
+    public class ControlsRight extends AbstractAction {
+        static final long serialVersionUID = 1L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            commandQueue.add(1);
+        }
+    }
+
     /**
      * Inner class to start and stop the game clock when prompted by the user
      * @see java.awt.event.ActionListener
@@ -234,8 +259,9 @@ public class AlienAttackFrame extends JFrame {
                 rightButton.setEnabled(false);
             } else if(obj == endButton) {
                 gameTimer.stop();
-                graphicsPanel.clearScreen();
+                readConfigFile();
                 AlienAttackFrame.this.repaint();
+                openMainMenu();
 
             } else {
                 System.out.println("ERROR");
