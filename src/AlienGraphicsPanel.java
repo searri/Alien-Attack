@@ -98,7 +98,7 @@ public class AlienGraphicsPanel extends JPanel {
             int alienSize = randomNumInRange(1, 3);     //how big is the new alien
             int location = randomNumInRange(0, gameScreenSize);     //where is it
             AlienAttackAlien newAlien = new AlienAttackAlien(alienSize*30, location, gameScreenSize);   //create alien
-            add(newAlien);  //add to screen
+            add(newAlien);                      //add to screen
             aliensOnScreen.add(newAlien);       //add to list
         }
     }
@@ -159,11 +159,21 @@ public class AlienGraphicsPanel extends JPanel {
             AlienAttackAlien currAlien = aliensOnScreen.get(i);
             int currAlienSize = currAlien.getAlienSize();
             double currAlienY = (currAlien.getLocation().getY() + currAlienSize);
-            if(currAlienY > (gameScreenSize-(LARGE*4))) {
+            if(currAlienY > (gameScreenSize-(LARGE*3))) {
                 remove(currAlien);
                 aliensOnScreen.remove(i);
             }
         }
+    }
+
+    /**
+     * Clears game screen, empties aliensOnScreen ArrayList
+     */
+    public void clearScreen() {
+        for(int i=0; i<aliensOnScreen.size(); i++) {
+            remove(aliensOnScreen.get(i));
+        }
+        aliensOnScreen.clear();
     }
 
 }

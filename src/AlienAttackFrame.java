@@ -206,7 +206,9 @@ public class AlienAttackFrame extends JFrame {
                 rightButton.setEnabled(false);
             } else if(obj == endButton) {
                 gameTimer.stop();
-                System.out.println("GAME END");
+                graphicsPanel.clearScreen();
+                AlienAttackFrame.this.repaint();
+
             } else {
                 System.out.println("ERROR");
             }
