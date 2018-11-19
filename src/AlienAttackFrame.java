@@ -260,6 +260,14 @@ public class AlienAttackFrame extends JFrame {
             int currScore = graphicsPanel.getScore();
             scoreBoard.setText(Integer.toString(currScore));
 
+            //PLAYER HIT - test to see if player has been hit
+            if(graphicsPanel.playerIsHit()) {
+                if(graphicsPanel.getPlayer().shrinkPlayerSize()) {
+                    gameTimer.stop();
+                    System.out.println("Lol u ded");
+                }
+            }
+
             //Refresh game screen
             AlienAttackFrame.this.repaint();
         }

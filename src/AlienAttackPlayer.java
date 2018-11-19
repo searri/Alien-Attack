@@ -44,6 +44,10 @@ public class AlienAttackPlayer extends JComponent {
         playerSize = newSize;
     }
 
+    /**
+     * Move the player left, but within the game frame
+     * @param howManyPixels number of pixels to move left
+     */
     public void movePlayerLeft(int howManyPixels) {
         double currX = getLocation().getX();
         currX-=howManyPixels;
@@ -54,6 +58,10 @@ public class AlienAttackPlayer extends JComponent {
         }
     }
 
+    /**
+     * Move player right, but within the game frame
+     * @param howManyPixels: number of pixels to move right
+     */
     public void movePlayerRight(int howManyPixels) {
         double currX = getLocation().getX();
         currX+=howManyPixels;
@@ -61,6 +69,21 @@ public class AlienAttackPlayer extends JComponent {
             setLocation(maxXCoord, (int)getLocation().getY());
         } else {
             setLocation((int)currX, (int)getLocation().getY());
+        }
+    }
+
+    /**
+     * Shrinks player down one size
+     * @return true if player is dead
+     */
+    public boolean shrinkPlayerSize() {
+        if(playerSize == 30) {
+            return true;
+        } else {
+            playerSize-=30;
+            setSize(playerSize, playerSize);
+            setLocation(calcXStartCoord(), calcYStartCoord());
+            return false;
         }
     }
 }

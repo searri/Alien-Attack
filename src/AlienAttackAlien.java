@@ -13,9 +13,9 @@ public class AlienAttackAlien extends JComponent {
 
     /**
      * Constructor for Alien
-     * @param size: the 30, 60, or 90
-     * @param startX: starting location of the Alien
-     * @param screenSize: size of the game screen
+     * @param size the 30, 60, or 90
+     * @param startX starting location of the Alien
+     * @param screenSize size of the game screen
      */
     public AlienAttackAlien(int size, int startX, int screenSize) {
         alienSize = size;

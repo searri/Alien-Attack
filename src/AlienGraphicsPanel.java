@@ -118,4 +118,29 @@ public class AlienGraphicsPanel extends JPanel {
         return score;
     }
 
+    /**
+     * Tests all aliens in current state against player; if hitboxes overlap, then player is hit
+     * @return true if player has been hit
+     */
+    public boolean playerIsHit() {
+        double playerLeftX = player.getLocation().getX();
+        double playerRightX = player.getLocation().getX() + player.getPlayerSize();
+        double playerY = player.getLocation().getY();
+        for(int i=0; i<aliensOnScreen.size(); i++) {
+            int currAlienSize = aliensOnScreen.get(i).getAlienSize();
+            double currAlienRightX = aliensOnScreen.get(i).getLocation().getX() + currAlienSize;
+            double currAlienLeftX = aliensOnScreen.get(i).getLocation().getX();
+            double currAlienY = aliensOnScreen.get(i).getLocation().getY() + currAlienSize;
+
+            boolean rightHit = (playerLeftX > currAlienLeftX && playerLeftX < currAlienRightX && playerY < currAlienY);
+            boolean leftHit = (playerRightX > currAlienLeftX && playerRightX < currAlienRightX && playerY < currAlienY);
+            boolean topBigHit = (playerRightX < currAlienRightX && playerLeftX > currAlienLeftX && playerY < currAlienY);
+            boolean topSmallHit = (playerRightX > currAlienRightX && playerLeftX < currAlienLeftX && playerY < currAlienY);
+            if(rightHit || leftHit || topBigHit || topSmallHit) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
