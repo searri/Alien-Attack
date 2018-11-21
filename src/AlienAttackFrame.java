@@ -159,6 +159,10 @@ public class AlienAttackFrame extends JFrame {
         mainMenu.setVisible(true);
     }
 
+    /**
+     * Inner class to listen for keyboard input and then add the appropriate movement command to the command queue
+     * @see java.awt.event.KeyListener
+     */
     public class ControlsListener implements KeyListener {
         @Override
         public void keyPressed(KeyEvent key) {
