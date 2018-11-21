@@ -11,7 +11,7 @@ public class AlienAttackAlien extends JComponent {
     private int gameScreenSize;
     private int alienSize;
 
-    //points to draw Alien ship shape - based on concept art by my sister
+    //points to draw Alien ship shape - based on concept suggestions from my sister (a far better artist than I)
     static int[] xPoints = { 0,  2, 2, 4,  4,  6, 6, 8,  8, 10, 11, 11, 13, 13, 15, 17, 17, 19, 19, 20, 22, 22, 24, 24, 26, 26, 28, 28, 30, 24, 27, 24, 15,  6,  3,  6};
     static int[] yPoints = {10, 10, 6, 7, 10, 10, 8, 9, 10, 10,  7,  0,  2,  4,  0,  4,  2,  0,  7, 10, 10,  9,  8, 10, 10,  7,  6, 10, 10, 18, 23, 23, 30, 23, 23, 18};
 

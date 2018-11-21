@@ -33,7 +33,6 @@ public class AlienGraphicsPanel extends JPanel {
         score = 0;
         setPreferredSize(new Dimension(frameSize, frameSize));
         aliensOnScreen = new ArrayList<AlienAttackAlien>();
-        setBackground(Color.BLACK);
         setLayout(null);
         gameScreenSize = frameSize;
         player = new AlienAttackPlayer(LARGE, frameSize);
@@ -56,6 +55,7 @@ public class AlienGraphicsPanel extends JPanel {
      * Advances all aliens on game screen
      */
     public void moveAllAliensDown() {
+        setBackground(Color.BLACK);
         for(int i=0; i<aliensOnScreen.size(); i++) {
             AlienAttackAlien currAlien = aliensOnScreen.get(i);
             boolean keepAlien;

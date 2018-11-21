@@ -224,10 +224,6 @@ public class AlienAttackFrame extends JFrame {
         private int cyclesElapsed = 0;
 
         @Override
-        /**
-         * Updates all game screen elements for one clock cycle
-         * @param e ActionEvent triggered by the game clock
-         */
         public void actionPerformed(ActionEvent e) {
             cyclesElapsed++;    //increment cycles elapsed
 
@@ -264,6 +260,7 @@ public class AlienAttackFrame extends JFrame {
 
             //PLAYER HIT - test to see if player has been hit
             if(graphicsPanel.playerIsHit()) {
+                graphicsPanel.setBackground(Color.RED);
                 graphicsPanel.clearScreen();
                 if(graphicsPanel.getPlayer().shrinkPlayerSize()) {
                     gameTimer.stop();
