@@ -12,6 +12,10 @@ public class AlienAttackMenu extends JFrame {
     private JButton startButton;
     private JPanel menuPanel;
     private ArrayList<HiScoreNode> highScores;
+    private JPanel leaderBoard;
+    private JTextArea scoreArea;
+    private JTextField scoreLabel;
+    private JButton showHiScores;
 
     public AlienAttackMenu() {
 
@@ -35,7 +39,24 @@ public class AlienAttackMenu extends JFrame {
         StartListener startListener = new StartListener();
         startButton.addActionListener(startListener);
 
+        //Initialize leaderboard component
+        scoreArea = new JTextArea();
+        scoreLabel = new JTextField("LEADERBOARD");
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        leaderBoard = new JPanel(new BorderLayout());
+        leaderBoard.add(scoreArea, BorderLayout.CENTER);
+        leaderBoard.add(scoreLabel, BorderLayout.NORTH);
+        leaderBoard.setPreferredSize(new Dimension(gameScreenSize, gameScreenSize));
+        leaderBoard.setVisible(false);
+
+        //Initialize leaderboard button
+        showHiScores = new JButton("VIEW HIGH SCORES");
+        showHiScores.setFont(new Font("Arial", Font.PLAIN, 14));
+        HiScoreListener hiScoreListener = new HiScoreListener();
+        showHiScores.addActionListener(hiScoreListener);
+
         //Add title field to panel
+        gc.fill = GridBagConstraints.BOTH;
         gc.gridx = 1;
         gc.gridy = 1;
         gc.gridheight = 1;
@@ -43,10 +64,15 @@ public class AlienAttackMenu extends JFrame {
         menuPanel.add(gameTitle, gc);
 
         //Add start button to panel
-        gc.gridy = 2;
+        gc.gridy = 3;
         menuPanel.add(startButton, gc);
 
+        //Add leaderboard button to panel
+        gc.gridy = 4;
+        menuPanel.add(showHiScores, gc);
+
         //final housekeeping
+        getContentPane().add(leaderBoard);
         getContentPane().add(menuPanel);
         pack();
     }
@@ -117,6 +143,25 @@ public class AlienAttackMenu extends JFrame {
             AlienAttackFrame attackFrame = new AlienAttackFrame(AlienAttackMenu.this);
             attackFrame.setVisible(true);
             AlienAttackMenu.this.setVisible(false);
+        }
+    }
+
+    public class HiScoreListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            readHighScores();
+            String leaderboardContent = "\n";
+            for(HiScoreNode i : highScores) {
+                leaderboardContent+=i.getName();
+                leaderboardContent+="\t";
+                leaderboardContent+=i.getScore();
+                leaderboardContent+="\n";
+            }
+            scoreArea.setText(leaderboardContent);
+            menuPanel.setVisible(false);
+            leaderBoard.setVisible(true);
+            pack();
+            System.out.print(leaderboardContent);
         }
     }
 }
