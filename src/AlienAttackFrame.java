@@ -15,9 +15,6 @@ public class AlienAttackFrame extends JFrame {
     static final long serialVersionUID = 1L;
     private int gameFrameSize;
     private AlienGraphicsPanel graphicsPanel;
-    private JButton leftButton;
-    private JButton rightButton;
-    private JPanel controlPanel;
     private JButton startButton;
     private JButton pauseButton;
     private JButton endButton;
@@ -49,19 +46,6 @@ public class AlienAttackFrame extends JFrame {
         //set up game engine
         gameTimer = new Timer(cycleTime, new GameEngine());
         commandQueue = new LinkedList<Integer>();
-
-        //Controls - initialize and add
-        leftButton = new JButton("< LEFT");
-        leftButton.setEnabled(false);   //game controls aren't enabled until START is pressed
-        rightButton = new JButton("RIGHT >");
-        rightButton.setEnabled(false);
-        ControlListener controlsListener = new ControlListener();
-        controlPanel = new JPanel();
-        leftButton.addActionListener(controlsListener);
-        rightButton.addActionListener(controlsListener);
-        controlPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        controlPanel.add(leftButton);
-        controlPanel.add(rightButton);
 
         //Options - initialize and add
         startButton = new JButton("Start");
@@ -95,13 +79,14 @@ public class AlienAttackFrame extends JFrame {
 
         //Add panels to main frame
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(graphicsPanel, BorderLayout.CENTER);   
-        getContentPane().add(controlPanel, BorderLayout.SOUTH);
+        getContentPane().add(graphicsPanel, BorderLayout.CENTER);
         getContentPane().add(upperFields, BorderLayout.NORTH);
-        startButton.doClick();
 
         //Final housekeeping
+        startButton.doClick();
         pack();
+        getContentPane().addKeyListener(new ControlsListener());
+        getContentPane().requestFocus();
     }
 
     /**
@@ -167,52 +152,32 @@ public class AlienAttackFrame extends JFrame {
     }
 
     /**
-     * In the center of the game frame, exchange the game screen for main menu
+     * Hide current game window and show menu screen
      */
     public void openMainMenu() {
         this.setVisible(false);
         mainMenu.setVisible(true);
     }
 
-    /**
-     * Inner class to take user input from LEFT and RIGHT buttons
-     * @see java.awt.event.ActionListener
-     */
-    public class ControlListener implements ActionListener {
-
+    public class ControlsListener implements KeyListener {
         @Override
-        public void actionPerformed(ActionEvent e) {
-            Object obj = e.getSource();
-            if(obj == leftButton) {
+        public void keyPressed(KeyEvent key) {
+            int c = key.getKeyCode();
+            if(c == 37) {   //left arrow key
                 commandQueue.add(0);    //0: LEFT
-            } else if(obj == rightButton) {
+            } else if(c == 39) {    //right arrow key
                 commandQueue.add(1);    //1: RIGHT
             } else {
-                System.out.println("ERROR");
+                System.out.println("UNACCEPTABLE INPUT");
             }
         }
-
+    
+        @Override
+        public void keyReleased(KeyEvent e) {}
+    
+        @Override
+        public void keyTyped(KeyEvent key) {}
     }
-
-    // public class ControlsListener implements KeyListener {
-    //     @Override
-    //     public void keyPressed(KeyEvent key) {
-    //         int c = key.getKeyCode();
-    //         if(c == KeyEvent.VK_LEFT) {
-    //             commandQueue.add(0);    //0: LEFT
-    //         } else if(c == KeyEvent.VK_RIGHT) {
-    //             commandQueue.add(1);    //1: RIGHT
-    //         } else {
-    //             System.out.println("UNACCEPTABLE INPUT");
-    //         }
-    //     }
-    
-    //     @Override
-    //     public void keyReleased(KeyEvent e) {}
-    
-    //     @Override
-    //     public void keyTyped(KeyEvent key) {}
-    // }
 
     /**
      * Inner class to start and stop the game clock when prompted by the user
@@ -229,16 +194,14 @@ public class AlienAttackFrame extends JFrame {
                 //disable START and enable everything else
                 startButton.setEnabled(false);
                 pauseButton.setEnabled(true);
-                leftButton.setEnabled(true);
-                rightButton.setEnabled(true);
+
             } else if(obj == pauseButton) {
                 gameTimer.stop();
 
                 //enable START and disable everything else
                 startButton.setEnabled(true);
                 pauseButton.setEnabled(false);
-                leftButton.setEnabled(false);
-                rightButton.setEnabled(false);
+
             } else if(obj == endButton) {
                 gameTimer.stop();
                 openMainMenu();
