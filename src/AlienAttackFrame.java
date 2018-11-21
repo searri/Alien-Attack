@@ -264,7 +264,13 @@ public class AlienAttackFrame extends JFrame {
                 graphicsPanel.clearScreen();
                 if(graphicsPanel.getPlayer().shrinkPlayerSize()) {
                     gameTimer.stop();
-                    System.out.println("Lol u ded");
+                    JOptionPane.showMessageDialog(
+                        AlienAttackFrame.this, 
+                        "Your score: "+graphicsPanel.getScore()+"\n"
+                        +"Elapsed time: "+(cyclesElapsed/20)+"s",
+                        "You died!",
+                        JOptionPane.PLAIN_MESSAGE
+                    );
                 }
             }
 
