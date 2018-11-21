@@ -36,13 +36,15 @@ public class AlienAttackFrame extends JFrame {
     private int increaseSize;               //how many more aliens spawn when difficulty increases
     private int spawnInterval;              //how many cycles until new aliens are spawned
 
-    public AlienAttackFrame() {
+    public AlienAttackFrame(AlienAttackMenu menu) {
 
         //Housekeeping
         readConfigFile();
         gameFrameSize = 900;
         setTitle("Alien Attack [Alpha]");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        mainMenu = menu;
+        menu.setVisible(false);
 
         //set up game engine
         gameTimer = new Timer(cycleTime, new GameEngine());
@@ -85,29 +87,21 @@ public class AlienAttackFrame extends JFrame {
         //Initialize graphics panel
         graphicsPanel = new AlienGraphicsPanel(gameFrameSize);
 
-        controlPanel.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "moveLeft");
-        controlPanel.getActionMap().put("moveLeft", new ControlsLeft());
-
-        controlPanel.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
-        controlPanel.getActionMap().put("moveRight", new ControlsRight());
-
         //Initialize upper info panel
         upperFields = new JPanel(new BorderLayout());
         upperFields.add(optionPanel, BorderLayout.SOUTH);
         upperFields.add(scoreBoard, BorderLayout.CENTER);
         upperFields.add(scoreLabel, BorderLayout.NORTH);
 
-        //Initialize main menu
-        mainMenu = new AlienAttackMenu(gameFrameSize, this);
-
         //Add panels to main frame
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(mainMenu, BorderLayout.CENTER);   
+        getContentPane().add(graphicsPanel, BorderLayout.CENTER);   
         getContentPane().add(controlPanel, BorderLayout.SOUTH);
+        getContentPane().add(upperFields, BorderLayout.NORTH);
+        startButton.doClick();
 
         //Final housekeeping
         pack();
-        controlPanel.requestFocus();
     }
 
     /**
@@ -173,25 +167,11 @@ public class AlienAttackFrame extends JFrame {
     }
 
     /**
-     * In the center of the game frame, exchange the main menu for the game screen
-     */
-    public void closeMainMenu() {
-        remove(mainMenu);
-        getContentPane().add(graphicsPanel, BorderLayout.CENTER);
-        getContentPane().add(upperFields, BorderLayout.NORTH);
-        repaint();
-        pack();
-    }
-
-    /**
      * In the center of the game frame, exchange the game screen for main menu
      */
     public void openMainMenu() {
-        remove(graphicsPanel);
-        getContentPane().remove(upperFields);
-        getContentPane().add(mainMenu, BorderLayout.CENTER);
-        repaint();
-        pack();
+        this.setVisible(false);
+        mainMenu.setVisible(true);
     }
 
     /**
@@ -214,23 +194,25 @@ public class AlienAttackFrame extends JFrame {
 
     }
 
-    public class ControlsLeft extends AbstractAction {
-        static final long serialVersionUID = 1L;
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            commandQueue.add(0);
-        }
-    }
-
-    public class ControlsRight extends AbstractAction {
-        static final long serialVersionUID = 1L;
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            commandQueue.add(1);
-        }
-    }
+    // public class ControlsListener implements KeyListener {
+    //     @Override
+    //     public void keyPressed(KeyEvent key) {
+    //         int c = key.getKeyCode();
+    //         if(c == KeyEvent.VK_LEFT) {
+    //             commandQueue.add(0);    //0: LEFT
+    //         } else if(c == KeyEvent.VK_RIGHT) {
+    //             commandQueue.add(1);    //1: RIGHT
+    //         } else {
+    //             System.out.println("UNACCEPTABLE INPUT");
+    //         }
+    //     }
+    
+    //     @Override
+    //     public void keyReleased(KeyEvent e) {}
+    
+    //     @Override
+    //     public void keyTyped(KeyEvent key) {}
+    // }
 
     /**
      * Inner class to start and stop the game clock when prompted by the user
@@ -259,10 +241,7 @@ public class AlienAttackFrame extends JFrame {
                 rightButton.setEnabled(false);
             } else if(obj == endButton) {
                 gameTimer.stop();
-                readConfigFile();
-                AlienAttackFrame.this.repaint();
                 openMainMenu();
-
             } else {
                 System.out.println("ERROR");
             }

@@ -2,22 +2,23 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class AlienAttackMenu extends JPanel {
+public class AlienAttackMenu extends JFrame {
     static final long serialVersionUID = 1L;
     private int gameScreenSize;
     private GridBagConstraints gc;
     private JTextField gameTitle;
     private JButton startButton;
-    private AlienAttackFrame parentFrame;
+    private JPanel menuPanel;
 
-    public AlienAttackMenu(int screenSize, AlienAttackFrame parent) {
+    public AlienAttackMenu() {
 
         //Initialization housekeeping
-        gameScreenSize = screenSize;
-        setPreferredSize(new Dimension(gameScreenSize, gameScreenSize));
-        setLayout(new GridBagLayout());
+        gameScreenSize = 900;
+        menuPanel = new JPanel(new GridBagLayout());
+        menuPanel.setPreferredSize(new Dimension(gameScreenSize, gameScreenSize));
         gc = new GridBagConstraints();
-        parentFrame = parent;
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Alien Attack Menu [Alpha]");
 
         //Initialize title field
         gameTitle = new JTextField("Alien Attack!");
@@ -35,18 +36,23 @@ public class AlienAttackMenu extends JPanel {
         gc.gridy = 1;
         gc.gridheight = 1;
         gc.gridwidth = 2;
-        this.add(gameTitle, gc);
+        menuPanel.add(gameTitle, gc);
 
         //Add start button to panel
         gc.gridy = 2;
-        this.add(startButton, gc);
+        menuPanel.add(startButton, gc);
 
+        //final housekeeping
+        getContentPane().add(menuPanel);
+        pack();
     }
 
     public class StartListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            parentFrame.closeMainMenu();
+            AlienAttackFrame attackFrame = new AlienAttackFrame(AlienAttackMenu.this);
+            attackFrame.setVisible(true);
+            AlienAttackMenu.this.setVisible(false);
         }
     }
 }
