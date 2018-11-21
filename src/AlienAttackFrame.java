@@ -156,6 +156,7 @@ public class AlienAttackFrame extends JFrame {
      */
     public void openMainMenu() {
         this.setVisible(false);
+        // mainMenu
         mainMenu.setVisible(true);
     }
 
@@ -262,6 +263,8 @@ public class AlienAttackFrame extends JFrame {
             if(graphicsPanel.playerIsHit()) {
                 graphicsPanel.setBackground(Color.RED);
                 graphicsPanel.clearScreen();
+
+                //if player is dead
                 if(graphicsPanel.getPlayer().shrinkPlayerSize()) {
                     gameTimer.stop();
                     JOptionPane.showMessageDialog(
@@ -271,6 +274,7 @@ public class AlienAttackFrame extends JFrame {
                         "You died!",
                         JOptionPane.PLAIN_MESSAGE
                     );
+                    endButton.doClick();
                 }
             }
 
