@@ -81,6 +81,7 @@ public class AlienAttackPlayer extends JComponent {
             return true;
         } else {
             playerSize-=30;
+            maxXCoord = gameScreenSize-playerSize;
             setSize(playerSize, playerSize);
             setLocation(calcXStartCoord(), calcYStartCoord());
             return false;

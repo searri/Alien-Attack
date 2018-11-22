@@ -17,7 +17,7 @@ public class HiScoreNode implements Comparable<HiScoreNode>{
         if(scoresCompare==0) {
             return name.compareTo(otherNode.getName());
         } else {
-            return scoresCompare;
+            return -(scoresCompare);
         }
     }
 

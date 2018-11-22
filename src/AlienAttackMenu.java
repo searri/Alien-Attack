@@ -29,7 +29,6 @@ public class AlienAttackMenu extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Alien Attack Menu [Alpha]");
         highScores = new ArrayList<HiScoreNode>();
-        readHighScores();
 
         //Initialize title field
         gameTitle = new JTextField("Alien Attack!");
@@ -104,15 +103,15 @@ public class AlienAttackMenu extends JFrame {
         } catch(NumberFormatException e) {
             System.out.println("ERROR: The High Scores list is not in an acceptable format.");
         }
-        printHighScores();
     }
 
     public void examineScore(int score){
+        readHighScores();
         int lowestScore = highScores.get(9).getScore();
         if(score>lowestScore) {
             String userName = (String)JOptionPane.showInputDialog(
                 this, 
-                "Congrats on your top-10 score! Enter your name:", 
+                "Congrats on your top 10 score! Enter your name:", 
                 "HIGH SCORE!", 
                 JOptionPane.PLAIN_MESSAGE
             );
@@ -128,13 +127,15 @@ public class AlienAttackMenu extends JFrame {
                 JOptionPane.PLAIN_MESSAGE
             );
         }
+        printHighScores();
+        highScores.clear();
     }
 
     public void printHighScores() {
         try {
             FileWriter writer = new FileWriter("project-2-searri/src/resources/hiscores.txt");
-            for(HiScoreNode i : highScores) {
-                writer.write(i.toString());
+            for(int i=0; i<10; i++) {
+                writer.write(highScores.get(i).toString());
                 writer.write("\n");
             }
             writer.close();
@@ -169,7 +170,8 @@ public class AlienAttackMenu extends JFrame {
                 menuPanel.setVisible(false);
                 leaderBoard.setVisible(true);
                 pack();
-                System.out.print(leaderboardContent);
+                printHighScores();
+                highScores.clear();
             } else if(src==backToMenu) {
                 leaderBoard.setVisible(false);
                 menuPanel.setVisible(true);
