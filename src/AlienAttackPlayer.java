@@ -14,20 +14,20 @@ public class AlienAttackPlayer extends JComponent {
 
     Color color1 = new Color(96, 32, 96);
     Color color2 = new Color(57, 19, 57);
-    int[] bodyCircle = {15, 11, 6, 6};
-    int[] triX = {6, 24, 15};
-    int[] triY = {11, 11, 30};
-    int[] wing1X = {0, 2, 2, 4, 4, 9, 9, 4};
-    int[] wing1Y = {12, 12, 8, 9, 12, 12, 16, 16};
-    int[] wing2X = {10, 10, 12, 12};
-    int[] wing2Y = {8, 0, 2, 8};
-    int[] wing3X = {18, 18, 20, 20};
-    int[] wing3Y = {8, 2, 0, 8};
-    int[] wing4X = {21, 26, 26, 28, 28, 30, 26, 21};
-    int[] wing4Y = {12, 12, 9, 8, 12, 12, 16, 16};
+    int[] bodyCircle = {45, 33, 18, 18};
+    int[] triX = {18, 72, 45};
+    int[] triY = {33, 33, 90};
+    int[] wing1X = {0, 6, 6, 12, 12, 27, 27, 12};
+    int[] wing1Y = {36, 36, 24, 27, 36, 36, 48, 48};
+    int[] wing2X = {30, 30, 36, 36};
+    int[] wing2Y = {24, 0, 6, 24};
+    int[] wing3X = {54, 54, 60, 60};
+    int[] wing3Y = {24, 6, 0, 24};
+    int[] wing4X = {63, 78, 78, 84, 84, 90, 78, 63};
+    int[] wing4Y = {36, 36, 27, 24, 36, 36, 48, 48};
 
     public AlienAttackPlayer(int startSize, int screenSize) {
-        setPlayerSize(startSize);
+        playerSize = startSize;
         gameScreenSize = screenSize;
         maxXCoord = screenSize-startSize;
         setSize(playerSize, playerSize);
@@ -45,6 +45,7 @@ public class AlienAttackPlayer extends JComponent {
         g2d.fillPolygon(wing4X, wing4Y, 8);
         g2d.setColor(color1);
         g2d.fillPolygon(triX, triY, 3);
+        g2d.setColor(Color.BLUE);
         g2d.fillOval(bodyCircle[2], bodyCircle[3], bodyCircle[0], bodyCircle[1]);
     }
 
@@ -64,23 +65,23 @@ public class AlienAttackPlayer extends JComponent {
         playerSize = newSize;
         int k = newSize/30;
         for(int i=0; i<4; i++) {
-            bodyCircle[i]*=k;
+            bodyCircle[i]/=k;
         }
         for(int i=0; i<3; i++) {
-            triX[i]*=k;
-            triY[i]*=k;
+            triX[i]/=k;
+            triY[i]/=k;
         }
         for(int i=0; i<8; i++) {
-            wing1X[i]*=k;
-            wing1Y[i]*=k;
-            wing4X[i]*=k;
-            wing4Y[i]*=k;
+            wing1X[i]/=k;
+            wing1Y[i]/=k;
+            wing4X[i]/=k;
+            wing4Y[i]/=k;
         }
         for(int i=0; i<4; i++) {
-            wing2X[i]*=k;
-            wing2Y[i]*=k;
-            wing3X[i]*=k;
-            wing3Y[i]*=k;
+            wing2X[i]/=k;
+            wing2Y[i]/=k;
+            wing3X[i]/=k;
+            wing3Y[i]/=k;
         }
     }
 

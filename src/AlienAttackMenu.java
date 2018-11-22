@@ -13,7 +13,9 @@ public class AlienAttackMenu extends JFrame {
     private JPanel menuPanel;
     private ArrayList<HiScoreNode> highScores;
     private JPanel leaderBoard;
-    private JTextArea scoreArea;
+    private JPanel leaderBoardContent;
+    private JTextArea scoreAreaNames;
+    private JTextArea scoreAreaScores;
     private JTextField scoreLabel;
     private JButton showHiScores;
     private JButton backToMenu;
@@ -50,14 +52,21 @@ public class AlienAttackMenu extends JFrame {
         backToMenu.addActionListener(hiScoreListener);
 
         //Initialize leaderboard component
-        scoreArea = new JTextArea();
+        scoreAreaScores = new JTextArea();
+        scoreAreaNames = new JTextArea();
         scoreLabel = new JTextField("LEADERBOARD");
+        scoreLabel.setHorizontalAlignment(JTextField.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 32));
         leaderBoard = new JPanel(new BorderLayout());
-        leaderBoard.add(scoreArea, BorderLayout.CENTER);
+        leaderBoardContent = new JPanel();
+        leaderBoardContent.add(scoreAreaNames);
+        leaderBoardContent.add(scoreAreaScores);
         leaderBoard.add(scoreLabel, BorderLayout.NORTH);
         leaderBoard.add(backToMenu, BorderLayout.SOUTH);
+        leaderBoard.add(leaderBoardContent, BorderLayout.CENTER);
         leaderBoard.setPreferredSize(new Dimension(gameScreenSize, gameScreenSize));
+        leaderBoard.setBackground(Color.WHITE);
+        leaderBoardContent.setBackground(Color.WHITE);
         leaderBoard.setVisible(false);
 
         //Add title field to panel
@@ -115,6 +124,7 @@ public class AlienAttackMenu extends JFrame {
                 "HIGH SCORE!", 
                 JOptionPane.PLAIN_MESSAGE
             );
+            userName = userName.replaceAll(" ", "");
             HiScoreNode newNode = new HiScoreNode(score, userName);
             highScores.add(newNode);
             Collections.sort(highScores);
@@ -159,14 +169,16 @@ public class AlienAttackMenu extends JFrame {
             Object src = e.getSource();
             if(src==showHiScores) {
                 readHighScores();
-                String leaderboardContent = "\n";
+                String leaderboardNameContent = "\n";
+                String leaderboardScoreContent = "\n";
                 for(int i=0; i<10; i++) {
-                    leaderboardContent+=highScores.get(i).getName();
-                    leaderboardContent+="\t";
-                    leaderboardContent+=highScores.get(i).getScore();
-                    leaderboardContent+="\n";
+                    leaderboardNameContent+=highScores.get(i).getName();
+                    leaderboardNameContent+="\n";
+                    leaderboardScoreContent+=highScores.get(i).getScore();
+                    leaderboardScoreContent+="\n";
                 }
-                scoreArea.setText(leaderboardContent);
+                scoreAreaNames.setText(leaderboardNameContent);
+                scoreAreaScores.setText(leaderboardScoreContent);
                 menuPanel.setVisible(false);
                 leaderBoard.setVisible(true);
                 pack();
