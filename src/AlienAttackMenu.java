@@ -56,7 +56,7 @@ public class AlienAttackMenu extends JFrame {
         scoreAreaNames = new JTextArea();
         scoreLabel = new JTextField("LEADERBOARD");
         scoreLabel.setHorizontalAlignment(JTextField.CENTER);
-        scoreLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
         leaderBoard = new JPanel(new BorderLayout());
         leaderBoardContent = new JPanel();
         leaderBoardContent.add(scoreAreaNames);
@@ -124,7 +124,11 @@ public class AlienAttackMenu extends JFrame {
                 "HIGH SCORE!", 
                 JOptionPane.PLAIN_MESSAGE
             );
-            userName = userName.replaceAll(" ", "");
+            if(userName==null) {
+                userName = "NoName";
+            } else {
+                userName = userName.replaceAll(" ", "");
+            }
             HiScoreNode newNode = new HiScoreNode(score, userName);
             highScores.add(newNode);
             Collections.sort(highScores);

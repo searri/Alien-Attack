@@ -14,7 +14,7 @@ public class AlienAttackPlayer extends JComponent {
 
     Color color1 = new Color(96, 32, 96);
     Color color2 = new Color(57, 19, 57);
-    int[] bodyCircle = {45, 33, 18, 18};
+    int[] bodyCircle = {27, 15, 36};
     int[] triX = {18, 72, 45};
     int[] triY = {33, 33, 90};
     int[] wing1X = {0, 6, 6, 12, 12, 27, 27, 12};
@@ -46,7 +46,7 @@ public class AlienAttackPlayer extends JComponent {
         g2d.setColor(color1);
         g2d.fillPolygon(triX, triY, 3);
         g2d.setColor(Color.BLUE);
-        g2d.fillOval(bodyCircle[2], bodyCircle[3], bodyCircle[0], bodyCircle[1]);
+        g2d.fillOval(bodyCircle[0], bodyCircle[1], bodyCircle[2], bodyCircle[2]);
     }
 
     public int calcXStartCoord() {
@@ -64,7 +64,7 @@ public class AlienAttackPlayer extends JComponent {
     public void setPlayerSize(int newSize) {
         playerSize = newSize;
         int k = newSize/30;
-        for(int i=0; i<4; i++) {
+        for(int i=0; i<3; i++) {
             bodyCircle[i]/=k;
         }
         for(int i=0; i<3; i++) {
