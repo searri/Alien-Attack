@@ -16,17 +16,20 @@ public class AlienAttackMenu extends JFrame {
     private JTextArea scoreArea;
     private JTextField scoreLabel;
     private JButton showHiScores;
+    private JButton backToMenu;
 
     public AlienAttackMenu() {
 
         //Initialization housekeeping
         gameScreenSize = 900;
+        setLayout(new FlowLayout(FlowLayout.CENTER));
         menuPanel = new JPanel(new GridBagLayout());
         menuPanel.setPreferredSize(new Dimension(gameScreenSize, gameScreenSize));
         gc = new GridBagConstraints();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Alien Attack Menu [Alpha]");
         highScores = new ArrayList<HiScoreNode>();
+        readHighScores();
 
         //Initialize title field
         gameTitle = new JTextField("Alien Attack!");
@@ -39,6 +42,14 @@ public class AlienAttackMenu extends JFrame {
         StartListener startListener = new StartListener();
         startButton.addActionListener(startListener);
 
+        //Initialize leaderboard button
+        showHiScores = new JButton("VIEW HIGH SCORES");
+        showHiScores.setFont(new Font("Arial", Font.PLAIN, 14));
+        HiScoreListener hiScoreListener = new HiScoreListener();
+        showHiScores.addActionListener(hiScoreListener);
+        backToMenu = new JButton("Back to Menu");
+        backToMenu.addActionListener(hiScoreListener);
+
         //Initialize leaderboard component
         scoreArea = new JTextArea();
         scoreLabel = new JTextField("LEADERBOARD");
@@ -46,14 +57,9 @@ public class AlienAttackMenu extends JFrame {
         leaderBoard = new JPanel(new BorderLayout());
         leaderBoard.add(scoreArea, BorderLayout.CENTER);
         leaderBoard.add(scoreLabel, BorderLayout.NORTH);
+        leaderBoard.add(backToMenu, BorderLayout.SOUTH);
         leaderBoard.setPreferredSize(new Dimension(gameScreenSize, gameScreenSize));
         leaderBoard.setVisible(false);
-
-        //Initialize leaderboard button
-        showHiScores = new JButton("VIEW HIGH SCORES");
-        showHiScores.setFont(new Font("Arial", Font.PLAIN, 14));
-        HiScoreListener hiScoreListener = new HiScoreListener();
-        showHiScores.addActionListener(hiScoreListener);
 
         //Add title field to panel
         gc.fill = GridBagConstraints.BOTH;
@@ -98,7 +104,7 @@ public class AlienAttackMenu extends JFrame {
         } catch(NumberFormatException e) {
             System.out.println("ERROR: The High Scores list is not in an acceptable format.");
         }
-
+        printHighScores();
     }
 
     public void examineScore(int score){
@@ -126,7 +132,7 @@ public class AlienAttackMenu extends JFrame {
 
     public void printHighScores() {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("project-2-searri/src/resources/hiscores.txt"));
+            FileWriter writer = new FileWriter("project-2-searri/src/resources/hiscores.txt");
             for(HiScoreNode i : highScores) {
                 writer.write(i.toString());
                 writer.write("\n");
@@ -149,19 +155,26 @@ public class AlienAttackMenu extends JFrame {
     public class HiScoreListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            readHighScores();
-            String leaderboardContent = "\n";
-            for(HiScoreNode i : highScores) {
-                leaderboardContent+=i.getName();
-                leaderboardContent+="\t";
-                leaderboardContent+=i.getScore();
-                leaderboardContent+="\n";
+            Object src = e.getSource();
+            if(src==showHiScores) {
+                readHighScores();
+                String leaderboardContent = "\n";
+                for(int i=0; i<10; i++) {
+                    leaderboardContent+=highScores.get(i).getName();
+                    leaderboardContent+="\t";
+                    leaderboardContent+=highScores.get(i).getScore();
+                    leaderboardContent+="\n";
+                }
+                scoreArea.setText(leaderboardContent);
+                menuPanel.setVisible(false);
+                leaderBoard.setVisible(true);
+                pack();
+                System.out.print(leaderboardContent);
+            } else if(src==backToMenu) {
+                leaderBoard.setVisible(false);
+                menuPanel.setVisible(true);
+                pack();
             }
-            scoreArea.setText(leaderboardContent);
-            menuPanel.setVisible(false);
-            leaderBoard.setVisible(true);
-            pack();
-            System.out.print(leaderboardContent);
         }
     }
 }

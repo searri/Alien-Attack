@@ -156,7 +156,7 @@ public class AlienAttackFrame extends JFrame {
      */
     public void openMainMenu() {
         this.setVisible(false);
-        // mainMenu
+        mainMenu.examineScore(graphicsPanel.getScore());
         mainMenu.setVisible(true);
     }
 
