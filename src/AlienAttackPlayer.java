@@ -12,8 +12,22 @@ public class AlienAttackPlayer extends JComponent {
     private int gameScreenSize;
     private int maxXCoord;
 
+    Color color1 = new Color(96, 32, 96);
+    Color color2 = new Color(57, 19, 57);
+    int[] bodyCircle = {15, 11, 6, 6};
+    int[] triX = {6, 24, 15};
+    int[] triY = {11, 11, 30};
+    int[] wing1X = {0, 2, 2, 4, 4, 9, 9, 4};
+    int[] wing1Y = {12, 12, 8, 9, 12, 12, 16, 16};
+    int[] wing2X = {10, 10, 12, 12};
+    int[] wing2Y = {8, 0, 2, 8};
+    int[] wing3X = {18, 18, 20, 20};
+    int[] wing3Y = {8, 2, 0, 8};
+    int[] wing4X = {21, 26, 26, 28, 28, 30, 26, 21};
+    int[] wing4Y = {12, 12, 9, 8, 12, 12, 16, 16};
+
     public AlienAttackPlayer(int startSize, int screenSize) {
-        playerSize = startSize;
+        setPlayerSize(startSize);
         gameScreenSize = screenSize;
         maxXCoord = screenSize-startSize;
         setSize(playerSize, playerSize);
@@ -24,8 +38,14 @@ public class AlienAttackPlayer extends JComponent {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.BLUE);
-        g2d.fillOval(0, 0, playerSize, playerSize);
+        g2d.setColor(color2);
+        g2d.fillPolygon(wing1X, wing1Y, 8);
+        g2d.fillPolygon(wing2X, wing2Y, 4);
+        g2d.fillPolygon(wing3X, wing3Y, 4);
+        g2d.fillPolygon(wing4X, wing4Y, 8);
+        g2d.setColor(color1);
+        g2d.fillPolygon(triX, triY, 3);
+        g2d.fillOval(bodyCircle[2], bodyCircle[3], bodyCircle[0], bodyCircle[1]);
     }
 
     public int calcXStartCoord() {
@@ -42,6 +62,26 @@ public class AlienAttackPlayer extends JComponent {
 
     public void setPlayerSize(int newSize) {
         playerSize = newSize;
+        int k = newSize/30;
+        for(int i=0; i<4; i++) {
+            bodyCircle[i]*=k;
+        }
+        for(int i=0; i<3; i++) {
+            triX[i]*=k;
+            triY[i]*=k;
+        }
+        for(int i=0; i<8; i++) {
+            wing1X[i]*=k;
+            wing1Y[i]*=k;
+            wing4X[i]*=k;
+            wing4Y[i]*=k;
+        }
+        for(int i=0; i<4; i++) {
+            wing2X[i]*=k;
+            wing2Y[i]*=k;
+            wing3X[i]*=k;
+            wing3Y[i]*=k;
+        }
     }
 
     /**
@@ -80,7 +120,7 @@ public class AlienAttackPlayer extends JComponent {
         if(playerSize == 30) {
             return true;
         } else {
-            playerSize-=30;
+            setPlayerSize(playerSize-30);
             maxXCoord = gameScreenSize-playerSize;
             setSize(playerSize, playerSize);
             setLocation(calcXStartCoord(), calcYStartCoord());
