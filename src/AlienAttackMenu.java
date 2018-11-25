@@ -124,7 +124,7 @@ public class AlienAttackMenu extends JFrame {
                 "HIGH SCORE!", 
                 JOptionPane.PLAIN_MESSAGE
             );
-            if(userName==null) {
+            if(userName==null || userName=="") {
                 userName = "NoName";
             } else {
                 userName = userName.replaceAll(" ", "");
