@@ -1,7 +1,7 @@
 import java.awt.*;
 
 /**
- * Class for the player
+ * Implementation of Player class for design 1
  * @author Rick Sear
  */
 public class Player1 extends Player {
