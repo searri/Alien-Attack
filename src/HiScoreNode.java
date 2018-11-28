@@ -1,3 +1,8 @@
+/**
+ * This is a node to be held in the leaderboard ArrayList of the AlienAttackMenu
+ * It holds two pieces of data: a score and a name
+ * @author Rick Sear
+ */
 public class HiScoreNode implements Comparable<HiScoreNode>{
     private int score;
     private String name;

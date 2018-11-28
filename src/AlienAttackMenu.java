@@ -1,9 +1,16 @@
+/**
+ * CSCI 2113 - Project 2 - Alien Attack
+ */
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 import java.io.*;
 
+/**
+ * Class for game menu screen; handles the leaderboard and calls instances of AlienAttackFrame
+ * @author Rick Sear
+ */
 public class AlienAttackMenu extends JFrame {
     static final long serialVersionUID = 1L;
     private int gameScreenSize;
@@ -29,7 +36,7 @@ public class AlienAttackMenu extends JFrame {
         menuPanel.setPreferredSize(new Dimension(gameScreenSize, gameScreenSize));
         gc = new GridBagConstraints();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("Alien Attack Menu [Alpha]");
+        setTitle("Alien Attack Menu");
         highScores = new ArrayList<HiScoreNode>();
 
         //Initialize title field
@@ -91,6 +98,9 @@ public class AlienAttackMenu extends JFrame {
         pack();
     }
 
+    /**
+     * Reads in high scores from 'hiscores.txt'. Scores must be formatted as 'Name(String) Score(Int)'
+     */
     public void readHighScores() {
         try {
             //setup Scanner to read in config file from resources directory
@@ -106,7 +116,7 @@ public class AlienAttackMenu extends JFrame {
             fileReader.close();
             Collections.sort(highScores);
 
-        //catch various exceptions that could occur and inform the user
+        //catch various exceptions that could occur and inform the user (these aren't fatal, so no system exit)
         } catch(IOException e) {
             System.out.println("ERROR: Could not load High Scores list.");
         } catch(NumberFormatException e) {
@@ -114,9 +124,14 @@ public class AlienAttackMenu extends JFrame {
         }
     }
 
+    /**
+     * Takes a score from an AlienAttackFrame and compares it to the current scores. If it's in the top 10, takes a username
+     */
     public void examineScore(int score){
         readHighScores();
         int lowestScore = highScores.get(9).getScore();
+
+        //if in the top 10:
         if(score>lowestScore) {
             String userName = (String)JOptionPane.showInputDialog(
                 this, 
@@ -125,14 +140,19 @@ public class AlienAttackMenu extends JFrame {
                 JOptionPane.PLAIN_MESSAGE
             );
             if(userName==null || userName=="") {
+                //handle empty input without crashing
                 userName = "NoName";
             } else {
+                //remove spaces from username to prevent errors reading file
                 userName = userName.replaceAll(" ", "");
             }
+
+            //add score to leaderboard list and re-sort it
             HiScoreNode newNode = new HiScoreNode(score, userName);
             highScores.add(newNode);
             Collections.sort(highScores);
 
+        //user didn't get a top 10 score...
         } else {
             JOptionPane.showMessageDialog(
                 this,
@@ -141,10 +161,15 @@ public class AlienAttackMenu extends JFrame {
                 JOptionPane.PLAIN_MESSAGE
             );
         }
+
+        //save scores to text file and clear the ArrayList
         printHighScores();
         highScores.clear();
     }
 
+    /**
+     * Prints the first 10 entries of the leaderboard Arraylist to 'hiscores.txt'
+     */
     public void printHighScores() {
         try {
             FileWriter writer = new FileWriter("project-2-searri/src/resources/hiscores.txt");
@@ -154,10 +179,14 @@ public class AlienAttackMenu extends JFrame {
             }
             writer.close();
         } catch(IOException e) {
+            //not a fatal error, no system exit
             System.out.println("ERROR: Error writing high scores file.");
         }
     }
 
+    /**
+     * Inner class to initialize a new AlienAttackFrame if start button is pressed
+     */
     public class StartListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -167,11 +196,15 @@ public class AlienAttackMenu extends JFrame {
         }
     }
 
+    /**
+     * Inner class to switch between the leaderboard panel and menu panel (changes visibility of panels)
+     */
     public class HiScoreListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             Object src = e.getSource();
             if(src==showHiScores) {
+                //switching to leaderboard, read in top 10 scores from file and add to text area
                 readHighScores();
                 String leaderboardNameContent = "\n";
                 String leaderboardScoreContent = "\n";
@@ -186,9 +219,12 @@ public class AlienAttackMenu extends JFrame {
                 menuPanel.setVisible(false);
                 leaderBoard.setVisible(true);
                 pack();
+
+                //save high scores to text file and clean out leaderboard Arraylist
                 printHighScores();
                 highScores.clear();
             } else if(src==backToMenu) {
+                //switching to menu, hide the leaderboard and redraw the menu
                 leaderBoard.setVisible(false);
                 menuPanel.setVisible(true);
                 pack();

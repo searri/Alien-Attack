@@ -1,8 +1,5 @@
 /**
  * CSCI 2113 - Project 2 - Alien Attack
- * 
- * @author Rick Sear
- *
  */
 import javax.swing.*;
 import javax.swing.Timer;
@@ -11,6 +8,10 @@ import java.awt.event.*;
 import java.util.*;
 import java.io.*;
 
+/**
+ * Class for the overarching game frame; this contains all the game elements
+ * @author Rick Sear
+ */
 public class AlienAttackFrame extends JFrame {
     static final long serialVersionUID = 1L;
     private int gameFrameSize;
@@ -38,7 +39,7 @@ public class AlienAttackFrame extends JFrame {
         //Housekeeping
         readConfigFile();
         gameFrameSize = 900;
-        setTitle("Alien Attack [Alpha]");
+        setTitle("Alien Attack!");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         mainMenu = menu;
         menu.setVisible(false);
@@ -90,7 +91,7 @@ public class AlienAttackFrame extends JFrame {
     }
 
     /**
-     * Reads a text config file to set custom options for the game
+     * Reads a text config file to set options for the game
      */
     public void readConfigFile() {
 
@@ -122,37 +123,18 @@ public class AlienAttackFrame extends JFrame {
             AlienGraphicsPanel.smallAlienValue = Integer.parseInt(configSettings.get(12));
             spawnInterval = Integer.parseInt(configSettings.get(13));
 
-        //catch various exceptions that could occur, inform the user, and then initialize variables to default values
+        //catch various exceptions that could occur, inform the user, and close the game
         } catch(IOException e) {
-            JOptionPane.showMessageDialog(this, "Could not access config file. Starting game with default values.");
-            setDefaultValues();
+            JOptionPane.showMessageDialog(this, "Could not access config file. Exiting game.");
+            System.exit(0);
         } catch(NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Problem reading config file. Starting game with default values.");
-            setDefaultValues();
+            JOptionPane.showMessageDialog(this, "Problem reading config file. Exiting game.");
+            System.exit(0);
         }
     }
 
     /**
-     * simple method to initialize variables to game defaults (in case of error with config file)
-     */
-    public void setDefaultValues() {
-        cycleTime = 200;
-        AlienGraphicsPanel.largeAlienSpeed = 20;
-        AlienGraphicsPanel.medAlienSpeed = 30;
-        AlienGraphicsPanel.smallAlienSpeed = 40;
-        playerSpeed = 40;
-        increaseInterval = 20;
-        increaseSize = 2;
-        AlienGraphicsPanel.maxAliens = 4;
-        AlienGraphicsPanel.minAliens = 1;
-        AlienGraphicsPanel.largeAlienValue = 50;
-        AlienGraphicsPanel.medAlienValue = 25;
-        AlienGraphicsPanel.smallAlienValue = 10;
-        spawnInterval = 40;
-    }
-
-    /**
-     * Hide current game window and show menu screen
+     * Hide current game window and show menu screen, passing in the game's score
      */
     public void openMainMenu() {
         this.setVisible(false);

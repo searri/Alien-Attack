@@ -1,17 +1,21 @@
 /**
  * CSCI 2113 - Project 2 - Alien Attack
- * @author Rick Sear
  */
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class for the player
+ * @author Rick Sear
+ */
 public class AlienAttackPlayer extends JComponent {
     static final long serialVersionUID = 1L;
     private int playerSize;
     private int gameScreenSize;
     private int maxXCoord;
 
+    //in development: a fancy player design
     Color color1 = new Color(96, 32, 96);
     Color color2 = new Color(57, 19, 57);
     int[] bodyCircle = {27, 15, 36};
@@ -61,6 +65,10 @@ public class AlienAttackPlayer extends JComponent {
         return playerSize;
     }
 
+    /**
+     * Sets player size and performs arithmetic on coordinates to scale the look of the player depending on the size
+     * @param newSize 30, 60, or 90 (defined as AlienGraphicsPanel constants)
+     */
     public void setPlayerSize(int newSize) {
         playerSize = newSize;
         int k = newSize/30;

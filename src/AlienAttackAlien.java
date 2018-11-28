@@ -1,11 +1,14 @@
 /**
  * CSCI 2113 - Project 2 - Alien Attack
- * @author Rick Sear
  */
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class for alien enemies
+ * @author Rick Sear
+ */
 public class AlienAttackAlien extends JComponent {
     static final long serialVersionUID = 1L;
     private int gameScreenSize;

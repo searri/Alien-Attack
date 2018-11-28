@@ -1,6 +1,5 @@
 /**
  * CSCI 2113 - Project 2 - Alien Attack
- * @author Rick Sear
  */
 
 import javax.swing.*;
@@ -8,13 +7,17 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Class for the actual graphics window in the game frame; handles all the repainting of elements and contains player and aliens
+ * @author Rick Sear
+ */
 public class AlienGraphicsPanel extends JPanel {
     static final long serialVersionUID = 1L;
     static int LARGE = 90;              //pixel dimensions for each alien size
     static int MEDIUM = 60;
     static int SMALL = 30;
 
-    //CUSTOMIZABLE OPTIONS - read from config file
+    //CUSTOMIZABLE OPTIONS - read from config file (passed from AlienAttackFrame)
     static int largeAlienSpeed;         //how far each alien size moves in a cycle
     static int medAlienSpeed;
     static int smallAlienSpeed;
@@ -43,10 +46,18 @@ public class AlienGraphicsPanel extends JPanel {
         return player;
     }
 
+    /**
+     * Increase the maximum number of aliens that can be spawned
+     * @param increaseAmt Amount by which to increase
+     */
     public void increaseMaxAliens(int increaseAmt) {
         maxAliens+=increaseAmt;
     }
 
+    /**
+     * Increase the minumum number of aliens that can be spawned
+     * @param increaseAmt Amount by which to increase
+     */
     public void increaseMinAliens(int increaseAmt) {
         minAliens+=increaseAmt;
     }
@@ -90,7 +101,7 @@ public class AlienGraphicsPanel extends JPanel {
     }
 
     /**
-     * Add a random number of randomly defined aliens to the game screen
+     * Add a random number (between maxAliens and minAliens) of randomly defined aliens to the game screen
      */
     public void addRandomAliens() {
         int aliensToGenerate = randomNumInRange(minAliens, maxAliens);  //how many aliens to generate this cycle

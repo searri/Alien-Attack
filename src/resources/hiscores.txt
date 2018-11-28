@@ -1,3 +1,4 @@
+Rickisthebest 5555
 Rick 3530
 Rick! 660
 Rick 630
@@ -7,4 +8,3 @@ Rickard 385
 tesnamewithspaces 320
 Rick? 180
 NoName 135
-DefinitelyNotRick 30
