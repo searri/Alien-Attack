@@ -15,20 +15,13 @@ public class AlienAttackPlayer extends JComponent {
     private int gameScreenSize;
     private int maxXCoord;
 
-    //in development: a fancy player design
-    Color color1 = new Color(0, 179, 179);
-    Color color2 = new Color(0, 102, 102);
-    // int[] bodyCircle = {27, 15, 36};
-    int[] triX = {18, 72, 45};
-    int[] triY = {33, 33, 90};
-    int[] wing1X = {0, 6, 6, 12, 12, 27, 27, 12};
-    int[] wing1Y = {36, 36, 24, 27, 36, 36, 48, 48};
-    int[] wing2X = {30, 30, 36, 36};
-    int[] wing2Y = {24, 0, 6, 24};
-    int[] wing3X = {54, 54, 60, 60};
-    int[] wing3Y = {24, 6, 0, 24};
-    int[] wing4X = {63, 78, 78, 84, 84, 90, 78, 63};
-    int[] wing4Y = {36, 36, 27, 24, 36, 36, 48, 48};
+    Color color1 = new Color(96, 32, 96);
+    Color color2 = new Color(57, 19, 57);
+    int[] bodyCircle = {9, 5, 12};
+    int[] triX = {6, 24, 15};
+    int[] triY = {11, 11, 30};
+    int[] wingsX = { 4,  0,  2, 2, 4,  4, 10, 10, 12, 12, 18, 18, 20, 20, 26, 26, 28, 28, 30, 26};
+    int[] wingsY = {16, 12, 12, 8, 9, 12, 12,  0,  2, 12, 12,  3,  0, 12, 12,  9,  8, 12, 12, 16};
 
     public AlienAttackPlayer(int startSize, int screenSize) {
         playerSize = startSize;
@@ -42,15 +35,28 @@ public class AlienAttackPlayer extends JComponent {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        int k = playerSize/30;
         g2d.setColor(color2);
-        g2d.fillPolygon(wing1X, wing1Y, 8);
-        g2d.fillPolygon(wing2X, wing2Y, 4);
-        g2d.fillPolygon(wing3X, wing3Y, 4);
-        g2d.fillPolygon(wing4X, wing4Y, 8);
+        int[] theseWingsX = new int[wingsX.length];
+        int[] theseWingsY = new int[wingsY.length];
+        for(int i=0; i<wingsX.length; i++) {
+            theseWingsX[i] = wingsX[i] * k;
+            theseWingsY[i] = wingsY[i] * k;
+        }
+        g2d.fillPolygon(theseWingsX, theseWingsY, wingsX.length);
         g2d.setColor(color1);
-        g2d.fillPolygon(triX, triY, 3);
-        g2d.setColor(Color.BLUE);
-        // g2d.fillOval(bodyCircle[0], bodyCircle[1], bodyCircle[2], bodyCircle[2]);
+        int[] thisTriX = new int[triX.length];
+        int[] thisTriY = new int[triY.length];
+        for(int i=0; i<triX.length; i++) {
+            thisTriX[i] = triX[i] * k;
+            thisTriY[i] = triY[i] * k;
+        }
+        g2d.fillPolygon(thisTriX, thisTriY, 3);
+        int[] thisBody = new int[bodyCircle.length];
+        for(int i=0; i<bodyCircle.length; i++) {
+            thisBody[i] = bodyCircle[i] * k;
+        }
+        g2d.fillOval(thisBody[0], thisBody[1], thisBody[2], thisBody[2]);
     }
 
     public int calcXStartCoord() {
@@ -63,34 +69,6 @@ public class AlienAttackPlayer extends JComponent {
 
     public int getPlayerSize() {
         return playerSize;
-    }
-
-    /**
-     * Sets player size and performs arithmetic on coordinates to scale the look of the player depending on the size
-     * @param newSize 30, 60, or 90 (defined as AlienGraphicsPanel constants)
-     */
-    public void setPlayerSize(int newSize) {
-        playerSize = newSize;
-        int k = newSize/30;
-        // for(int i=0; i<3; i++) {
-        //     bodyCircle[i]/=k;
-        // }
-        for(int i=0; i<3; i++) {
-            triX[i]/=k;
-            triY[i]/=k;
-        }
-        for(int i=0; i<8; i++) {
-            wing1X[i]/=k;
-            wing1Y[i]/=k;
-            wing4X[i]/=k;
-            wing4Y[i]/=k;
-        }
-        for(int i=0; i<4; i++) {
-            wing2X[i]/=k;
-            wing2Y[i]/=k;
-            wing3X[i]/=k;
-            wing3Y[i]/=k;
-        }
     }
 
     /**
@@ -129,9 +107,9 @@ public class AlienAttackPlayer extends JComponent {
         if(playerSize == 30) {
             return true;
         } else {
-            setPlayerSize(playerSize-30);
-            maxXCoord = gameScreenSize-playerSize;
+            playerSize-=30;
             setSize(playerSize, playerSize);
+            maxXCoord = gameScreenSize-playerSize;
             setLocation(calcXStartCoord(), calcYStartCoord());
             return false;
         }
