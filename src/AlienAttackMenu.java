@@ -139,7 +139,7 @@ public class AlienAttackMenu extends JFrame {
                 "HIGH SCORE!", 
                 JOptionPane.PLAIN_MESSAGE
             );
-            if(userName==null || userName=="") {
+            if(userName==null || userName=="" || userName==" ") {
                 //handle empty input without crashing
                 userName = "NoName";
             } else {

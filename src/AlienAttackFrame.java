@@ -182,6 +182,8 @@ public class AlienAttackFrame extends JFrame {
                 startButton.setEnabled(false);
                 pauseButton.setEnabled(true);
 
+                AlienAttackFrame.this.getContentPane().requestFocus();
+
             } else if(obj == pauseButton) {
                 gameTimer.stop();
 
