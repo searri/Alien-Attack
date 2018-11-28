@@ -27,7 +27,7 @@ public class AlienGraphicsPanel extends JPanel {
     static int medAlienValue;
     static int smallAlienValue;
 
-    private AlienAttackPlayer player;
+    private Player1 player;
     private ArrayList<AlienAttackAlien> aliensOnScreen;
     private int gameScreenSize;
     private int score;
@@ -38,11 +38,11 @@ public class AlienGraphicsPanel extends JPanel {
         aliensOnScreen = new ArrayList<AlienAttackAlien>();
         setLayout(null);
         gameScreenSize = frameSize;
-        player = new AlienAttackPlayer(LARGE, frameSize);
+        player = new Player1(LARGE, frameSize);
         add(player);
     }
 
-    public AlienAttackPlayer getPlayer() {
+    public Player1 getPlayer() {
         return player;
     }
 
