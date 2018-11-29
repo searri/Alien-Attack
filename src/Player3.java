@@ -64,11 +64,10 @@ public class Player3 extends Player {
         g2d.setColor(color1);
         g2d.fillPolygon(thisBody2X, thisBody2Y, thisBody2X.length);
         g2d.fillPolygon(thisTriX, thisTriY, 3);
-        g2d.setColor(color2);
-        g2d.fillOval(thisOval1[0], thisOval1[1], thisOval1[2], thisOval1[3]);
-        g2d.setColor(color1);
         g2d.fillOval(thisOval3[0], thisOval3[1], thisOval3[2], thisOval3[3]);
         g2d.fillOval(thisOval2[0], thisOval2[1], thisOval2[2], thisOval2[3]);
+        g2d.setColor(color2);
+        g2d.fillOval(thisOval1[0], thisOval1[1], thisOval1[2], thisOval1[3]);
         
     }
 }

@@ -4,6 +4,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.*;
 import java.util.*;
 import java.io.*;
 
@@ -15,17 +16,29 @@ public class AlienAttackMenu extends JFrame {
     static final long serialVersionUID = 1L;
     private int gameScreenSize;
     private GridBagConstraints gc;
+    private ArrayList<HiScoreNode> highScores;
+    private int currPlayer;
+
+    //main menu components
     private JTextField gameTitle;
     private JButton startButton;
     private JPanel menuPanel;
-    private ArrayList<HiScoreNode> highScores;
+    private JButton showHiScores;
+
+    //leaderboard components
     private JPanel leaderBoard;
     private JPanel leaderBoardContent;
     private JTextArea scoreAreaNames;
     private JTextArea scoreAreaScores;
     private JTextField scoreLabel;
-    private JButton showHiScores;
     private JButton backToMenu;
+
+    //player sample components
+    private JTextField selectPlayer;
+    private JPanel playerSamples;
+    private Player1 p1Sample;
+    private Player2 p2Sample;
+    private Player3 p3Sample;
 
     public AlienAttackMenu() {
 
@@ -43,12 +56,14 @@ public class AlienAttackMenu extends JFrame {
         gameTitle = new JTextField("Alien Attack!");
         gameTitle.setEditable(false);
         gameTitle.setFont(new Font("Arial", Font.BOLD, 32));
+        gameTitle.setHorizontalAlignment(JTextField.CENTER);
 
         //Initialize start button
         startButton = new JButton("START GAME");
         startButton.setFont(new Font("Arial", Font.PLAIN, 14));
         StartListener startListener = new StartListener();
         startButton.addActionListener(startListener);
+        startButton.setEnabled(false);
 
         //Initialize leaderboard button
         showHiScores = new JButton("VIEW HIGH SCORES");
@@ -76,20 +91,51 @@ public class AlienAttackMenu extends JFrame {
         leaderBoardContent.setBackground(Color.WHITE);
         leaderBoard.setVisible(false);
 
+        //Initialize player appearance samples
+        currPlayer = 0;
+        PlayerSelector mouseSelection = new PlayerSelector();
+        p1Sample = new Player1(90, 900);
+        p1Sample.setLocation(new Point(10, 10));
+        p1Sample.addMouseListener(mouseSelection);
+        p2Sample = new Player2(90, 900);
+        p2Sample.setLocation(new Point(110, 10));
+        p2Sample.addMouseListener(mouseSelection);
+        p3Sample = new Player3(90, 900);
+        p3Sample.setLocation(new Point(210, 10));
+        p3Sample.addMouseListener(mouseSelection);
+        selectPlayer = new JTextField("Select your player:");
+        selectPlayer.setEditable(false);
+        selectPlayer.setFont(new Font("Arial", Font.PLAIN, 24));
+        selectPlayer.setHorizontalAlignment(JTextField.CENTER);
+
+        //Add player samples to the sample panel
+        playerSamples = new JPanel();
+        playerSamples.setLayout(null);
+        playerSamples.add(p1Sample);
+        playerSamples.add(p2Sample);
+        playerSamples.add(p3Sample);
+        playerSamples.setPreferredSize(new Dimension(320, 110));
+
         //Add title field to panel
         gc.fill = GridBagConstraints.BOTH;
         gc.gridx = 1;
-        gc.gridy = 1;
+        gc.gridy = 0;
         gc.gridheight = 1;
         gc.gridwidth = 2;
         menuPanel.add(gameTitle, gc);
 
-        //Add start button to panel
+        //Add player samples panel to menu panel
+        gc.gridy = 2;
+        menuPanel.add(selectPlayer, gc);
         gc.gridy = 3;
+        menuPanel.add(playerSamples, gc);
+
+        //Add start button to panel
+        gc.gridy = 4;
         menuPanel.add(startButton, gc);
 
         //Add leaderboard button to panel
-        gc.gridy = 4;
+        gc.gridy = 5;
         menuPanel.add(showHiScores, gc);
 
         //final housekeeping
@@ -190,7 +236,7 @@ public class AlienAttackMenu extends JFrame {
     public class StartListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            AlienAttackFrame attackFrame = new AlienAttackFrame(AlienAttackMenu.this, 3);
+            AlienAttackFrame attackFrame = new AlienAttackFrame(AlienAttackMenu.this, currPlayer);
             attackFrame.setVisible(true);
             AlienAttackMenu.this.setVisible(false);
         }
@@ -230,5 +276,44 @@ public class AlienAttackMenu extends JFrame {
                 pack();
             }
         }
+    }
+
+    public class PlayerSelector implements MouseListener {
+        @Override
+        public void mouseExited(MouseEvent e) {}
+        @Override
+        public void mouseReleased(MouseEvent e) {}
+        @Override
+        public void mousePressed(MouseEvent e) {        }
+        @Override
+        public void mouseEntered(MouseEvent e) {}
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            Object obj = e.getSource();
+            Border redLine = BorderFactory.createLineBorder(Color.RED);
+            if(obj==p1Sample) {
+                p1Sample.setBorder(redLine);
+                p2Sample.setBorder(null);
+                p3Sample.setBorder(null);
+                startButton.setEnabled(true);
+                currPlayer = 1;
+            } else if(obj==p2Sample) {
+                p1Sample.setBorder(null);
+                p2Sample.setBorder(redLine);
+                p3Sample.setBorder(null);
+                startButton.setEnabled(true);
+                currPlayer = 2;
+            } else if(obj==p3Sample) {
+                p1Sample.setBorder(null);
+                p2Sample.setBorder(null);
+                p3Sample.setBorder(redLine);
+                startButton.setEnabled(true);
+                currPlayer = 3;
+            } else {
+                System.out.println("Unknown object.");
+            }
+            AlienAttackMenu.this.repaint();
+        }
+        
     }
 }
