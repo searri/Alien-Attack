@@ -7,8 +7,8 @@ import java.awt.*;
 public class Player3 extends Player {
     static final long serialVersionUID = 1L;
 
-    Color color1 = new Color(0, 32, 128);
-    Color color2 = new Color(0, 57, 230);
+    Color color1 = new Color(0, 51, 204);
+    Color color2 = new Color(0, 102, 255);
     int[] bodyGeom1X = {9, 11, 11, 19, 19, 21, 21,  9};
     int[] bodyGeom1Y = {3,  4,  9,  9,  4,  3, 10, 10};
     int[] bodyGeom2X = {4, 6,  6, 24, 24, 26, 26,  4};
@@ -63,7 +63,7 @@ public class Player3 extends Player {
         g2d.fillPolygon(thisBody1X, thisBody1Y, thisBody1X.length);
         g2d.setColor(color1);
         g2d.fillPolygon(thisBody2X, thisBody2Y, thisBody2X.length);
-        g2d.fillPolygon(thisTriX, thisTriY, 3);
+        // g2d.fillPolygon(thisTriX, thisTriY, 3);
         g2d.fillOval(thisOval3[0], thisOval3[1], thisOval3[2], thisOval3[3]);
         g2d.fillOval(thisOval2[0], thisOval2[1], thisOval2[2], thisOval2[3]);
         g2d.setColor(color2);

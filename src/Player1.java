@@ -7,8 +7,8 @@ import java.awt.*;
 public class Player1 extends Player {
     static final long serialVersionUID = 1L;
 
-    Color color1 = new Color(96, 32, 96);
-    Color color2 = new Color(57, 19, 57);
+    Color color1 = new Color(204, 0, 255);
+    Color color2 = new Color(153, 0, 204);
     int[] bodyCircle = {9, 5, 12};
     int[] triX = {6, 24, 15};
     int[] triY = {11, 11, 30};

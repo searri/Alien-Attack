@@ -193,6 +193,10 @@ public class AlienAttackMenu extends JFrame {
                 userName = userName.replaceAll(" ", "");
             }
 
+            if(userName.length() > 45) {
+                userName = userName.substring(0, 46);
+            }
+
             //add score to leaderboard list and re-sort it
             HiScoreNode newNode = new HiScoreNode(score, userName);
             highScores.add(newNode);
