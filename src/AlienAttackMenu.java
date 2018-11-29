@@ -190,7 +190,7 @@ public class AlienAttackMenu extends JFrame {
     public class StartListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            AlienAttackFrame attackFrame = new AlienAttackFrame(AlienAttackMenu.this);
+            AlienAttackFrame attackFrame = new AlienAttackFrame(AlienAttackMenu.this, 3);
             attackFrame.setVisible(true);
             AlienAttackMenu.this.setVisible(false);
         }

@@ -34,7 +34,7 @@ public class AlienAttackFrame extends JFrame {
     private int increaseSize;               //how many more aliens spawn when difficulty increases
     private int spawnInterval;              //how many cycles until new aliens are spawned
 
-    public AlienAttackFrame(AlienAttackMenu menu) {
+    public AlienAttackFrame(AlienAttackMenu menu, int playerType) {
 
         //Housekeeping
         readConfigFile();
@@ -70,7 +70,7 @@ public class AlienAttackFrame extends JFrame {
         scoreLabel.setEditable(false);
 
         //Initialize graphics panel
-        graphicsPanel = new AlienGraphicsPanel(gameFrameSize);
+        graphicsPanel = new AlienGraphicsPanel(gameFrameSize, playerType);
 
         //Initialize upper info panel
         upperFields = new JPanel(new BorderLayout());
