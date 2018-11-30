@@ -169,21 +169,6 @@ public class AlienGraphicsPanel extends JPanel {
     }
 
     /**
-     * Removes any alien too close to the player to make respawning fair
-     */
-    public void clearRespawnArea() {
-        for(int i=0; i<aliensOnScreen.size(); i++) {
-            AlienAttackAlien currAlien = aliensOnScreen.get(i);
-            int currAlienSize = currAlien.getAlienSize();
-            double currAlienY = (currAlien.getLocation().getY() + currAlienSize);
-            if(currAlienY > (gameScreenSize-(LARGE*3))) {
-                remove(currAlien);
-                aliensOnScreen.remove(i);
-            }
-        }
-    }
-
-    /**
      * Clears game screen, empties aliensOnScreen ArrayList
      */
     public void clearScreen() {
