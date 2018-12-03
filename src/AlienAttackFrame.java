@@ -9,7 +9,7 @@ import java.util.*;
 import java.io.*;
 
 /**
- * Class for the overarching game frame; this contains all the game elements
+ * Class for the overarching active game frame; this contains all the game elements
  * @author Rick Sear
  */
 public class AlienAttackFrame extends JFrame {
@@ -44,7 +44,7 @@ public class AlienAttackFrame extends JFrame {
         mainMenu = menu;
         menu.setVisible(false);
 
-        //set up game engine
+        //set up game engine to trigger on timer pulse
         gameTimer = new Timer(cycleTime, new GameEngine());
         commandQueue = new LinkedList<Integer>();
 
@@ -134,7 +134,8 @@ public class AlienAttackFrame extends JFrame {
     }
 
     /**
-     * Hide current game window and show menu screen, passing in the game's score
+     * Hide current game window and show menu screen, passing in the game's score.
+     * When a new game starts, there will no longer be an active reference to this game frame, so garbage collection will take care of it
      */
     public void openMainMenu() {
         this.setVisible(false);
@@ -154,8 +155,6 @@ public class AlienAttackFrame extends JFrame {
                 commandQueue.add(0);    //0: LEFT
             } else if(c == 39) {    //right arrow key
                 commandQueue.add(1);    //1: RIGHT
-            } else {
-                System.out.println("UNACCEPTABLE INPUT");
             }
         }
     
@@ -175,6 +174,8 @@ public class AlienAttackFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             Object obj = e.getSource();
+
+            //if START was selected...
             if(obj == startButton) {
                 gameTimer.start();
 
@@ -184,6 +185,7 @@ public class AlienAttackFrame extends JFrame {
 
                 AlienAttackFrame.this.getContentPane().requestFocus();
 
+            //if PAUSE was selected
             } else if(obj == pauseButton) {
                 gameTimer.stop();
 
@@ -191,6 +193,7 @@ public class AlienAttackFrame extends JFrame {
                 startButton.setEnabled(true);
                 pauseButton.setEnabled(false);
 
+            //if END was selected
             } else if(obj == endButton) {
                 gameTimer.stop();
                 openMainMenu();
@@ -202,7 +205,7 @@ public class AlienAttackFrame extends JFrame {
 
     
     /**
-     * Inner class to handle moving game elements when triggered by clock
+     * Inner class to handle modifying game elements when triggered by clock
      * @see java.awt.event.ActionListener
      */
     public class GameEngine implements ActionListener {
@@ -226,11 +229,13 @@ public class AlienAttackFrame extends JFrame {
                 graphicsPanel.getPlayer().movePlayerRight(playerSpeed);
             }
 
+
             //ALIEN MOVEMENT - move all aliens down, generate more aliens
             graphicsPanel.moveAllAliensDown();
             if((cyclesElapsed % spawnInterval) == 0) {
                 graphicsPanel.addRandomAliens();
             }
+
 
             //GAME DIFFICULTY - check if it's time to increase game difficulty
             if(cyclesElapsed%increaseInterval == 0) {
@@ -239,16 +244,19 @@ public class AlienAttackFrame extends JFrame {
                 graphicsPanel.increaseMinAliens(increaseSize);
             }
 
+
             //SCORE - update score display
             int currScore = graphicsPanel.getScore();
             scoreBoard.setText(Integer.toString(currScore));
 
+
             //PLAYER HIT - test to see if player has been hit
             if(graphicsPanel.playerIsHit()) {
+                //if so, flash the screen red and clear aliens from the screen (more playable than just removing one alien)
                 graphicsPanel.setBackground(Color.RED);
                 graphicsPanel.clearScreen();
 
-                //if player is dead
+                //if player is dead, show score and elapsed time
                 if(graphicsPanel.getPlayer().shrinkPlayerSize()) {
                     gameTimer.stop();
                     JOptionPane.showMessageDialog(
@@ -258,6 +266,8 @@ public class AlienAttackFrame extends JFrame {
                         "You died!",
                         JOptionPane.PLAIN_MESSAGE
                     );
+
+                    //trigger the END button event
                     endButton.doClick();
                 }
             }

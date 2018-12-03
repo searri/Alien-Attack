@@ -13,11 +13,11 @@ import java.util.Random;
  */
 public class AlienGraphicsPanel extends JPanel {
     static final long serialVersionUID = 1L;
-    static int LARGE = 90;              //pixel dimensions for each alien size
+    static int LARGE = 90;              //pixel dimensions for each alien size (constants)
     static int MEDIUM = 60;
     static int SMALL = 30;
 
-    //CUSTOMIZABLE OPTIONS - read from config file (passed from AlienAttackFrame)
+    //CUSTOMIZABLE OPTIONS - read from config file (set by AlienAttackFrame)
     static int largeAlienSpeed;         //how far each alien size moves in a cycle
     static int medAlienSpeed;
     static int smallAlienSpeed;
@@ -27,10 +27,10 @@ public class AlienGraphicsPanel extends JPanel {
     static int medAlienValue;
     static int smallAlienValue;
 
-    private Player player;
-    private ArrayList<AlienAttackAlien> aliensOnScreen;
-    private int gameScreenSize;
-    private int score;
+    private Player player;              //player object
+    private ArrayList<AlienAttackAlien> aliensOnScreen;     //list of on-screen aliens
+    private int gameScreenSize;         //screen size
+    private int score;                  //score
 
     public AlienGraphicsPanel(int frameSize, int playerType) {
         score = 0;
@@ -38,6 +38,8 @@ public class AlienGraphicsPanel extends JPanel {
         aliensOnScreen = new ArrayList<AlienAttackAlien>();
         setLayout(null);
         gameScreenSize = frameSize;
+
+        //instantiate abstract Player object as one of the three types, depending on the choice passed to the constructor
         if(playerType==1) {
             player = new Player1(LARGE, frameSize);
         } else if(playerType==2) {

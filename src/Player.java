@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 /**
- * Class for the player
+ * Absract class for the player
  * @author Rick Sear
  */
 abstract class Player extends JComponent {

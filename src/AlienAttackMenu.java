@@ -73,7 +73,7 @@ public class AlienAttackMenu extends JFrame {
         backToMenu = new JButton("Back to Menu");
         backToMenu.addActionListener(hiScoreListener);
 
-        //Initialize leaderboard component
+        //Initialize leaderboard component and hide it
         scoreAreaScores = new JTextArea();
         scoreAreaNames = new JTextArea();
         scoreLabel = new JTextField("LEADERBOARD");
@@ -151,6 +151,8 @@ public class AlienAttackMenu extends JFrame {
         try {
             //setup Scanner to read in config file from resources directory
             Scanner fileReader = new Scanner(new File("project-2-searri/src/resources/hiscores.txt"));
+
+            //read in scores/names from resources document and save them to an ArrayList
             while (fileReader.hasNextLine()) {
                 String line = fileReader.nextLine();
                 String[] data = line.split(" ");
@@ -160,6 +162,8 @@ public class AlienAttackMenu extends JFrame {
                 highScores.add(newNode);
             }
             fileReader.close();
+
+            //sort ArrayList
             Collections.sort(highScores);
 
         //catch various exceptions that could occur and inform the user (these aren't fatal, so no system exit)
@@ -193,6 +197,7 @@ public class AlienAttackMenu extends JFrame {
                 userName = userName.replaceAll(" ", "");
             }
 
+            //impose limit on length of username (45 characters)
             if(userName.length() > 45) {
                 userName = userName.substring(0, 46);
             }
@@ -282,6 +287,9 @@ public class AlienAttackMenu extends JFrame {
         }
     }
 
+    /**
+     * Inner class to listen for mouse clicks on the player selection field and update the game player as necessary
+     */
     public class PlayerSelector implements MouseListener {
         @Override
         public void mouseExited(MouseEvent e) {}
@@ -294,6 +302,8 @@ public class AlienAttackMenu extends JFrame {
         @Override
         public void mouseClicked(MouseEvent e) {
             Object obj = e.getSource();
+
+            //add a border around the selected player
             Border redLine = BorderFactory.createLineBorder(Color.RED);
             if(obj==p1Sample) {
                 p1Sample.setBorder(redLine);
@@ -314,6 +324,7 @@ public class AlienAttackMenu extends JFrame {
                 startButton.setEnabled(true);
                 currPlayer = 3;
             } else {
+                //should never reach this point
                 System.out.println("Unknown object.");
             }
             AlienAttackMenu.this.repaint();

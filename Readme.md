@@ -13,7 +13,8 @@ Note: The Project 2 requirements may change during the development of the projec
 
 ## Comments and Notes
 
-[Filled in by student.]
+Extra credit requirements implemented:
+- Ability to choose appearance of player
 
 ## Grading Rubric
 
