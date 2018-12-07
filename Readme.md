@@ -15,6 +15,7 @@ Note: The Project 2 requirements may change during the development of the projec
 
 Extra credit requirements implemented:
 - Ability to choose appearance of player
+- Fire missiles at the aliens
 
 ## Grading Rubric
 
