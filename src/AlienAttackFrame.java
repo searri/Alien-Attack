@@ -21,7 +21,7 @@ public class AlienAttackFrame extends JFrame {
     private JButton endButton;
     private JPanel optionPanel;
     private Timer gameTimer;
-    private Queue<Integer> commandQueue;    //0 - left, 1 - right, else - do nothing
+    private Queue<Integer> commandQueue;    //0 - left, 1 - right, 2 - fire, else - do nothing
     private JTextField scoreBoard;
     private JTextField scoreLabel;
     private JPanel upperFields;
@@ -122,6 +122,7 @@ public class AlienAttackFrame extends JFrame {
             AlienGraphicsPanel.medAlienValue = Integer.parseInt(configSettings.get(11));
             AlienGraphicsPanel.smallAlienValue = Integer.parseInt(configSettings.get(12));
             spawnInterval = Integer.parseInt(configSettings.get(13));
+            AlienGraphicsPanel.missileSpeed = Integer.parseInt(configSettings.get(14));
 
         //catch various exceptions that could occur, inform the user, and close the game
         } catch(IOException e) {
@@ -155,6 +156,8 @@ public class AlienAttackFrame extends JFrame {
                 commandQueue.add(0);    //0: LEFT
             } else if(c == 39) {    //right arrow key
                 commandQueue.add(1);    //1: RIGHT
+            } else if(c==32) {      //spacebar: fire missile
+                commandQueue.add(2);    //2: FIRE
             }
         }
     
@@ -220,13 +223,15 @@ public class AlienAttackFrame extends JFrame {
             try {
                 currCommand = commandQueue.remove();
             } catch(NoSuchElementException i) { //.remove() throws this exception if Queue is empty
-                currCommand = 2;
+                currCommand = 3;
             }
 
             if(currCommand==0) {            //O: LEFT
                 graphicsPanel.getPlayer().movePlayerLeft(playerSpeed);
             } else if(currCommand==1) {     //1: RIGHT
                 graphicsPanel.getPlayer().movePlayerRight(playerSpeed);
+            } else if(currCommand==2) {
+                graphicsPanel.launchMissile();  //2: FIRE
             }
 
 
@@ -236,6 +241,8 @@ public class AlienAttackFrame extends JFrame {
                 graphicsPanel.addRandomAliens();
             }
 
+            //MISSILE MOVEMENT - move all missiles up
+            graphicsPanel.advanceMissiles();
 
             //GAME DIFFICULTY - check if it's time to increase game difficulty
             if(cyclesElapsed%increaseInterval == 0) {
@@ -244,6 +251,8 @@ public class AlienAttackFrame extends JFrame {
                 graphicsPanel.increaseMinAliens(increaseSize);
             }
 
+            //MISSILE HITS - Check for missile hits
+            graphicsPanel.aliensHit();
 
             //SCORE - update score display
             int currScore = graphicsPanel.getScore();

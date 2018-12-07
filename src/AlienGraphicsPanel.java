@@ -26,16 +26,19 @@ public class AlienGraphicsPanel extends JPanel {
     static int largeAlienValue;         //point values for each alien size
     static int medAlienValue;
     static int smallAlienValue;
+    static int missileSpeed;            //how far a missile moves in a cycle
 
     private Player player;              //player object
-    private ArrayList<AlienAttackAlien> aliensOnScreen;     //list of on-screen aliens
+    private ArrayList<Alien> aliensOnScreen;     //list of on-screen aliens
+    private ArrayList<Missile> missilesOnScreen;            //list of on-screen missiles
     private int gameScreenSize;         //screen size
     private int score;                  //score
 
     public AlienGraphicsPanel(int frameSize, int playerType) {
         score = 0;
         setPreferredSize(new Dimension(frameSize, frameSize));
-        aliensOnScreen = new ArrayList<AlienAttackAlien>();
+        aliensOnScreen = new ArrayList<Alien>();
+        missilesOnScreen = new ArrayList<Missile>();
         setLayout(null);
         gameScreenSize = frameSize;
 
@@ -76,7 +79,7 @@ public class AlienGraphicsPanel extends JPanel {
     public void moveAllAliensDown() {
         setBackground(Color.BLACK);
         for(int i=0; i<aliensOnScreen.size(); i++) {
-            AlienAttackAlien currAlien = aliensOnScreen.get(i);
+            Alien currAlien = aliensOnScreen.get(i);
             boolean keepAlien;
             int alienSize = currAlien.getAlienSize();
             if(alienSize==LARGE) {
@@ -96,15 +99,24 @@ public class AlienGraphicsPanel extends JPanel {
                 remove(currAlien);
                 aliensOnScreen.remove(i);
 
-                //update score depending on Alien size
-                if(alienSize==LARGE) {
-                    score+=largeAlienValue;
-                } else if(alienSize==MEDIUM) {
-                    score+=medAlienValue;
-                } else if(alienSize==SMALL) {
-                    score+=smallAlienValue;
-                }
+                //update score
+                updateScore(currAlien);
             }
+        }
+    }
+
+    /**
+     * Updates score when an alien either leaves the screen or gets missile'd
+     * @param alien Alien that just got killed
+     */
+    public void updateScore(Alien alien) {
+        int alienSize = alien.getAlienSize();
+        if(alienSize==LARGE) {
+            score+=largeAlienValue;
+        } else if(alienSize==MEDIUM) {
+            score+=medAlienValue;
+        } else if(alienSize==SMALL) {
+            score+=smallAlienValue;
         }
     }
 
@@ -116,7 +128,7 @@ public class AlienGraphicsPanel extends JPanel {
         for(int i=0; i<aliensToGenerate; i++) {
             int alienSize = randomNumInRange(1, 3);     //how big is the new alien
             int location = randomNumInRange(0, gameScreenSize);     //where is it
-            AlienAttackAlien newAlien = new AlienAttackAlien(alienSize*30, location, gameScreenSize);   //create alien
+            Alien newAlien = new Alien(alienSize*30, location, gameScreenSize);   //create alien
             add(newAlien);                      //add to screen
             aliensOnScreen.add(newAlien);       //add to list
         }
@@ -142,28 +154,11 @@ public class AlienGraphicsPanel extends JPanel {
      * @return true if player has been hit
      */
     public boolean playerIsHit() {
-        //get the left, right, and top border coords of the player
-        double playerLeftX = player.getLocation().getX();
-        double playerRightX = player.getLocation().getX() + player.getPlayerSize();
-        double playerY = player.getLocation().getY();
+        Rectangle playerBorder = player.getBounds();
         for(int i=0; i<aliensOnScreen.size(); i++) {
-            //get the right, left, and bottom border coords of the alien
-            int currAlienSize = aliensOnScreen.get(i).getAlienSize();
-            double currAlienRightX = aliensOnScreen.get(i).getLocation().getX() + currAlienSize;
-            double currAlienLeftX = aliensOnScreen.get(i).getLocation().getX();
-            double currAlienY = aliensOnScreen.get(i).getLocation().getY() + currAlienSize;
-
-            //logic for a hit on the player's right side
-            boolean rightHit = (playerLeftX > currAlienLeftX && playerLeftX < currAlienRightX && playerY < currAlienY);
-            //logic for a hit on the player's left side
-            boolean leftHit = (playerRightX > currAlienLeftX && playerRightX < currAlienRightX && playerY < currAlienY);
-            //logic for a hit on top of the player, alien is bigger than player
-            boolean topBigHit = (playerRightX < currAlienRightX && playerLeftX > currAlienLeftX && playerY < currAlienY);
-            //logic for a hit on top of the player, alien is smaller than player
-            boolean topSmallHit = (playerRightX > currAlienRightX && playerLeftX < currAlienLeftX && playerY < currAlienY);
-            
-            //return true if any kind of hit was registered
-            if(rightHit || leftHit || topBigHit || topSmallHit) {
+            Alien currAlien = aliensOnScreen.get(i);
+            Rectangle alienBorder = currAlien.getBounds();
+            if(playerBorder.intersects(alienBorder)) {
                 return true;
             }
         }
@@ -171,13 +166,71 @@ public class AlienGraphicsPanel extends JPanel {
     }
 
     /**
-     * Clears game screen, empties aliensOnScreen ArrayList
+     * Clears game screen, empties ArrayLists of elements
      */
     public void clearScreen() {
         for(int i=0; i<aliensOnScreen.size(); i++) {
             remove(aliensOnScreen.get(i));
         }
         aliensOnScreen.clear();
+        for(int i=0; i<missilesOnScreen.size(); i++) {
+            remove(missilesOnScreen.get(i));
+        }
+        missilesOnScreen.clear();
+    }
+
+    /**
+     * Advances all missiles on screen
+     */
+    public void advanceMissiles() {
+        for(int i=0; i<missilesOnScreen.size(); i++) {
+            Missile currMissile = missilesOnScreen.get(i);
+
+            //Move missile up
+            int missileY = currMissile.getLocation().y;
+            currMissile.setLocation(currMissile.getLocation().x, missileY-missileSpeed);
+
+            //See if it's still on screen
+            Point missileLoc = currMissile.getLocation();
+            if(missileLoc.y+10<=0) {
+                //it's off screen
+                remove(currMissile);
+                missilesOnScreen.remove(currMissile);
+            }
+        }
+    }
+
+    /**
+     * Tests all Aliens with all missiles to see if it's been hit
+     */
+    public void aliensHit() {
+        for(int i=0; i<missilesOnScreen.size(); i++) {
+            Missile currMissile = missilesOnScreen.get(i);
+            for(int j=0; j<aliensOnScreen.size(); j++) {
+                Alien currAlien = aliensOnScreen.get(j);
+                Rectangle alienBorder = currAlien.getBounds();
+                Rectangle missileBorder = currMissile.getBounds();
+                if(missileBorder.intersects(alienBorder)) {
+                    //Collision found: remove both alien and missile
+                    remove(currMissile);
+                    remove(currAlien);
+                    missilesOnScreen.remove(currMissile);
+                    aliensOnScreen.remove(currAlien);
+                    updateScore(currAlien);
+                }
+            }
+        }
+    }
+
+    /**
+     * Spawns a missile from within the player
+     */
+    public void launchMissile() {
+        int missileSpawnX = (player.getLocation().x)+(player.getPlayerSize()/2)-2;
+        int missileSpawnY = (player.getLocation().y)+4;
+        Missile newMissile = new Missile(new Point(missileSpawnX, missileSpawnY));
+        add(newMissile);
+        missilesOnScreen.add(newMissile);
     }
 
 }

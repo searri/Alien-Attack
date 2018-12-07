@@ -9,7 +9,7 @@ import java.awt.*;
  * Class for alien enemies
  * @author Rick Sear
  */
-public class AlienAttackAlien extends JComponent {
+public class Alien extends JComponent {
     static final long serialVersionUID = 1L;
     private int gameScreenSize;
     private int alienSize;
@@ -26,7 +26,7 @@ public class AlienAttackAlien extends JComponent {
      * @param startX starting location of the Alien
      * @param screenSize size of the game screen
      */
-    public AlienAttackAlien(int size, int startX, int screenSize) {
+    public Alien(int size, int startX, int screenSize) {
         alienSize = size;
         gameScreenSize = screenSize;
         setSize(alienSize, alienSize);
