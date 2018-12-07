@@ -30,7 +30,7 @@ public class Missile extends JComponent {
         g2d.fillOval(4, 0, 8, 8);
         g2d.fillPolygon(finsX, finsY, finsX.length);
         g2d.setColor(bodyColor);
-        g2d.fillRect(4, 8, 8, 16);
+        g2d.fillRect(4, 4, 8, 16);
         g2d.setColor(flame);
         g2d.fillArc(4, 24, 8, 8, 0, 180);
         g2d.fillPolygon(flameX, flameY, flameX.length);

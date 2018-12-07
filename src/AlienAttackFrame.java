@@ -244,15 +244,15 @@ public class AlienAttackFrame extends JFrame {
             //MISSILE MOVEMENT - move all missiles up
             graphicsPanel.advanceMissiles();
 
+            //MISSILE HITS - Check for missile hits
+            graphicsPanel.aliensHit();
+
             //GAME DIFFICULTY - check if it's time to increase game difficulty
             if(cyclesElapsed%increaseInterval == 0) {
                 System.out.println(cyclesElapsed+": INCREASE DIFFICULTY");
                 graphicsPanel.increaseMaxAliens(increaseSize);
                 graphicsPanel.increaseMinAliens(increaseSize);
             }
-
-            //MISSILE HITS - Check for missile hits
-            graphicsPanel.aliensHit();
 
             //SCORE - update score display
             int currScore = graphicsPanel.getScore();
