@@ -1,4 +1,4 @@
-# CSCI 2113.11 - Fall 2018 Project 2 (100 pts) - Due December 6 at 11:59PM
+# CSCI 2113.11 - Fall 2018 Project 2 (100 pts) - Due December 9 at 11:59PM
 
 
 ## Name: Rick Sear
