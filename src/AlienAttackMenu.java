@@ -24,6 +24,8 @@ public class AlienAttackMenu extends JFrame {
     private JButton startButton;
     private JPanel menuPanel;
     private JButton showHiScores;
+    private JTextField tutorial1;
+    private JTextField tutorial2;
 
     //leaderboard components
     private JPanel leaderBoard;
@@ -57,6 +59,16 @@ public class AlienAttackMenu extends JFrame {
         gameTitle.setEditable(false);
         gameTitle.setFont(new Font("Arial", Font.BOLD, 32));
         gameTitle.setHorizontalAlignment(JTextField.CENTER);
+
+        //Initializae tutorial field
+        tutorial1 = new JTextField("Use the LEFT/RIGHT arrow keys to move");
+        tutorial1.setEditable(false);
+        tutorial1.setFont(new Font("Arial", Font.PLAIN, 16));
+        tutorial1.setHorizontalAlignment(JTextField.CENTER);
+        tutorial2 = new JTextField("Use SPACEBAR to shoot");
+        tutorial2.setEditable(false);
+        tutorial2.setFont(new Font("Arial", Font.PLAIN, 16));
+        tutorial2.setHorizontalAlignment(JTextField.CENTER);
 
         //Initialize start button
         startButton = new JButton("START GAME");
@@ -137,6 +149,12 @@ public class AlienAttackMenu extends JFrame {
         //Add leaderboard button to panel
         gc.gridy = 5;
         menuPanel.add(showHiScores, gc);
+
+        //Add tutorial to panel
+        gc.gridy = 7;
+        menuPanel.add(tutorial1, gc);
+        gc.gridy = 8;
+        menuPanel.add(tutorial2, gc);
 
         //final housekeeping
         getContentPane().add(leaderBoard);

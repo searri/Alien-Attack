@@ -1,3 +1,4 @@
+Rick 24360
 Rick 15790
 BetterScoresBecauseOfMissiles 10290
 Rick 7025
@@ -7,4 +8,3 @@ Rickisgreat 5340
 Rick 5135
 Rachell 4790
 Rick 4675
-testofareallylongusernameinputforleaderboard 4635
