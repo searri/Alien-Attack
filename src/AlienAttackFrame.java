@@ -100,7 +100,7 @@ public class AlienAttackFrame extends JFrame {
             ArrayList <String> configSettings = new ArrayList<String>();
             
             //setup Scanner to read in config file from resources directory
-            Scanner fileReader = new Scanner(new File("project-2-searri/src/resources/AlienAttack.properties"));
+            Scanner fileReader = new Scanner(new File("Alien-Attack/src/resources/AlienAttack.properties"));
             while (fileReader.hasNextLine()) {
                 String line = fileReader.nextLine();
                 String[] data = line.split(" ");
