@@ -184,9 +184,11 @@ public class AlienAttackMenu extends JFrame {
 
         //catch various exceptions that could occur and inform the user (these aren't fatal, so no system exit)
         } catch(IOException e) {
-            System.out.println("ERROR: Could not load High Scores list.");
+            JOptionPane.showMessageDialog(this, "ERROR: Could not load High Scores list.");
+            System.exit(0);
         } catch(NumberFormatException e) {
-            System.out.println("ERROR: The High Scores list is not in an acceptable format.");
+            JOptionPane.showMessageDialog(this, "ERROR: The High Scores list is not in an acceptable format.");
+            System.exit(0);
         }
     }
 
