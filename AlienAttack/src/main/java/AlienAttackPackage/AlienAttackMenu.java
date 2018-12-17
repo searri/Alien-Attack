@@ -166,7 +166,7 @@ public class AlienAttackMenu extends JFrame {
     public void readHighScores() {
         try {
             //setup Scanner to read in config file from resources directory
-            Scanner fileReader = new Scanner(new File("resources/hiscores.txt"));
+            Scanner fileReader = new Scanner(new File("config/hiscores.txt"));
 
             //read in scores/names from resources document and save them to an ArrayList
             while (fileReader.hasNextLine()) {
@@ -245,7 +245,7 @@ public class AlienAttackMenu extends JFrame {
      */
     public void printHighScores() {
         try {
-            FileWriter writer = new FileWriter("resources/hiscores.txt");
+            FileWriter writer = new FileWriter("config/hiscores.txt");
             for(int i=0; i<10; i++) {
                 writer.write(highScores.get(i).toString());
                 writer.write("\n");
