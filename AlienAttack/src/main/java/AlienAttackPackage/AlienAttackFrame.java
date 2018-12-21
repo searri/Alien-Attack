@@ -155,7 +155,9 @@ public class AlienAttackFrame extends JFrame {
             } else if(c == 39) {    //right arrow key
                 commandQueue.add(1);    //1: RIGHT
             } else if(c==32) {      //spacebar: fire missile
-                graphicsPanel.launchMissile();    //2: FIRE
+                graphicsPanel.launchMissile();
+            } else if(c==27) {      //escape: Pause
+                pauseButton.doClick();
             }
         }
     
@@ -229,10 +231,6 @@ public class AlienAttackFrame extends JFrame {
             } else if(currCommand==1) {     //1: RIGHT
                 graphicsPanel.getPlayer().movePlayerRight(playerSpeed);
             }
-            // } else if(currCommand==2) {
-            //     graphicsPanel.launchMissile();  //2: FIRE
-            // }
-
 
             //ALIEN MOVEMENT - move all aliens down, generate more aliens
             graphicsPanel.moveAllAliensDown();
@@ -248,7 +246,6 @@ public class AlienAttackFrame extends JFrame {
 
             //GAME DIFFICULTY - check if it's time to increase game difficulty
             if(cyclesElapsed%increaseInterval == 0) {
-                System.out.println(cyclesElapsed+": INCREASE DIFFICULTY");
                 graphicsPanel.increaseMaxAliens(increaseSize);
                 graphicsPanel.increaseMinAliens(increaseSize);
             }
@@ -282,6 +279,8 @@ public class AlienAttackFrame extends JFrame {
 
             //Refresh game screen
             AlienAttackFrame.this.repaint();
+            Rectangle frameSize = new Rectangle(AlienAttackFrame.this.getBounds());
+            System.out.println(frameSize.height+" x "+frameSize.width);
         }
     }
 
