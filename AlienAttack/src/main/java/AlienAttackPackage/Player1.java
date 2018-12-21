@@ -16,7 +16,7 @@ public class Player1 extends Player {
     int[] wingsX = { 4,  0,  2, 2, 4,  4, 10, 10, 12, 12, 18, 18, 20, 20, 26, 26, 28, 28, 30, 26};
     int[] wingsY = {16, 12, 12, 8, 9, 12, 12,  0,  2, 12, 12,  3,  0, 12, 12,  9,  8, 12, 12, 16};
 
-    public Player1(int startSize, int screenSize) {
+    public Player1(int startSize, Dimension screenSize) {
         super(startSize, screenSize);
     }
 

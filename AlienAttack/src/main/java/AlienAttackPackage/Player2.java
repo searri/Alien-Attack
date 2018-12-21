@@ -18,7 +18,7 @@ public class Player2 extends Player {
     int[] oval2 = {7, 4, 16, 10};
     int[] oval3 = {11, 0, 8, 8};
 
-    public Player2(int startSize, int screenSize) {
+    public Player2(int startSize, Dimension screenSize) {
         super(startSize, screenSize);
     }
 

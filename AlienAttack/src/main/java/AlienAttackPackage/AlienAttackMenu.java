@@ -104,13 +104,14 @@ public class AlienAttackMenu extends JFrame {
         //Initialize player appearance samples
         currPlayer = 0;
         PlayerSelector mouseSelection = new PlayerSelector();
-        p1Sample = new Player1(90, 900);
+        Dimension sampleDim = new Dimension(900, 900);
+        p1Sample = new Player1(90, sampleDim);
         p1Sample.setLocation(new Point(10, 10));
         p1Sample.addMouseListener(mouseSelection);
-        p2Sample = new Player2(90, 900);
+        p2Sample = new Player2(90, sampleDim);
         p2Sample.setLocation(new Point(110, 10));
         p2Sample.addMouseListener(mouseSelection);
-        p3Sample = new Player3(90, 900);
+        p3Sample = new Player3(90, sampleDim);
         p3Sample.setLocation(new Point(210, 10));
         p3Sample.addMouseListener(mouseSelection);
         selectPlayer = new JTextField("Select your player:");

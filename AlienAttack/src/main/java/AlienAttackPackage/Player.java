@@ -1,4 +1,5 @@
 package AlienAttackPackage;
+import java.awt.*;
 import javax.swing.*;
 
 /**
@@ -8,27 +9,31 @@ import javax.swing.*;
 abstract class Player extends JComponent {
     static final long serialVersionUID = 1L;
     private int playerSize;
-    private int gameScreenSize;
+    private Dimension gameScreenSize;
     private int maxXCoord;
 
-    public Player(int startSize, int screenSize) {
+    public Player(int startSize, Dimension screenSize) {
         playerSize = startSize;
         gameScreenSize = screenSize;
-        maxXCoord = screenSize-startSize;
+        maxXCoord = (int)(screenSize.getWidth() -startSize);
         setSize(playerSize, playerSize);
         setLocation(calcXStartCoord(), calcYStartCoord());
     }
 
     public int calcXStartCoord() {
-        return (int)((gameScreenSize-playerSize)/2);
+        return (int)((gameScreenSize.getWidth()-playerSize)/2);
     }
 
     public int calcYStartCoord() {
-        return (int)(gameScreenSize-5-playerSize);
+        return (int)(gameScreenSize.getWidth()-5-playerSize);
     }
 
     public int getPlayerSize() {
         return playerSize;
+    }
+
+    public void setScreenSize(Dimension newSize) {
+        gameScreenSize = newSize;
     }
 
     /**
@@ -69,7 +74,7 @@ abstract class Player extends JComponent {
         } else {
             playerSize-=30;
             setSize(playerSize, playerSize);
-            maxXCoord = gameScreenSize-playerSize;
+            maxXCoord = (int)(gameScreenSize.getWidth()-playerSize);
             setLocation(calcXStartCoord(), calcYStartCoord());
             return false;
         }

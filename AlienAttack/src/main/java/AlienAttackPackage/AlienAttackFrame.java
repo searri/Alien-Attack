@@ -12,7 +12,7 @@ import java.io.*;
  */
 public class AlienAttackFrame extends JFrame {
     static final long serialVersionUID = 1L;
-    private int gameFrameSize;
+    private Dimension gameFrameSize;
     private AlienGraphicsPanel graphicsPanel;
     private JButton startButton;
     private JButton pauseButton;
@@ -36,7 +36,7 @@ public class AlienAttackFrame extends JFrame {
 
         //Housekeeping
         readConfigFile();
-        gameFrameSize = 900;
+        gameFrameSize = new Dimension(900, 900);
         setTitle("Alien Attack!");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         mainMenu = menu;

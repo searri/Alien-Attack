@@ -8,7 +8,6 @@ import java.awt.*;
  */
 public class Alien extends JComponent {
     static final long serialVersionUID = 1L;
-    private int gameScreenSize;
     private int alienSize;
 
     //points to draw Alien ship shape
@@ -23,9 +22,8 @@ public class Alien extends JComponent {
      * @param startX starting location of the Alien
      * @param screenSize size of the game screen
      */
-    public Alien(int size, int startX, int screenSize) {
+    public Alien(int size, int startX) {
         alienSize = size;
-        gameScreenSize = screenSize;
         setSize(alienSize, alienSize);
         setLocation(startX, 0);
     }
@@ -58,15 +56,10 @@ public class Alien extends JComponent {
      * @param howManyPixels number of pixels to move the alien down by
      * @return whether or not the alien is still visible
      */
-    public boolean moveAlienDown(int howManyPixels) {
+    public void moveAlienDown(int howManyPixels) {
         double currY = getLocation().getY();
         currY+=howManyPixels;
-        if(currY>=gameScreenSize) {     //if this is true, then the alien is off-screen
-            return false;               //signal parent to remove element
-        } else {
-            setLocation((int)getLocation().getX(), (int)currY);
-            return true;                //signal parent to keep element
-        }
+        setLocation((int)getLocation().getX(), (int)currY);
     }
 
     public int getAlienSize() {

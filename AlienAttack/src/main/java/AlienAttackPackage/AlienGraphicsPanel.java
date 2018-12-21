@@ -28,12 +28,12 @@ public class AlienGraphicsPanel extends JPanel {
     private Player player;              //player object
     private ArrayList<Alien> aliensOnScreen;     //list of on-screen aliens
     private ArrayList<Missile> missilesOnScreen;            //list of on-screen missiles
-    private int gameScreenSize;         //screen size
+    private Dimension gameScreenSize;         //screen size
     private int score;                  //score
 
-    public AlienGraphicsPanel(int frameSize, int playerType) {
+    public AlienGraphicsPanel(Dimension frameSize, int playerType) {
         score = 0;
-        setPreferredSize(new Dimension(frameSize, frameSize));
+        setPreferredSize(frameSize);
         aliensOnScreen = new ArrayList<Alien>();
         missilesOnScreen = new ArrayList<Missile>();
         setLayout(null);
@@ -77,20 +77,18 @@ public class AlienGraphicsPanel extends JPanel {
         setBackground(Color.BLACK);
         for(int i=0; i<aliensOnScreen.size(); i++) {
             Alien currAlien = aliensOnScreen.get(i);
-            boolean keepAlien;
             int alienSize = currAlien.getAlienSize();
             if(alienSize==LARGE) {
-                keepAlien = currAlien.moveAlienDown(largeAlienSpeed);
+                currAlien.moveAlienDown(largeAlienSpeed);
             } else if(alienSize==MEDIUM) {
-                keepAlien = currAlien.moveAlienDown(medAlienSpeed);
+                currAlien.moveAlienDown(medAlienSpeed);
             } else if(alienSize==SMALL) {
-                keepAlien = currAlien.moveAlienDown(smallAlienSpeed);
+                currAlien.moveAlienDown(smallAlienSpeed);
             } else {
-                System.out.println("ERROR. There was a mismatch between Alien sizes, and the game had to terminate");
-                keepAlien = false;  //this must be set to satisfy the Java compiler
-                System.exit(0);     //exit immediately, there was some kind of major error
+                System.exit(-1);     //exit immediately, there was some kind of major error
             }
-            if(!keepAlien) {        //if the Alien went offscreen, update the score
+
+            if(currAlien.getLocation().y>=gameScreenSize.getHeight()) {        //if the Alien went offscreen, update the score
 
                 //remove Alien from all records to be garbage collected
                 remove(currAlien);
@@ -124,8 +122,8 @@ public class AlienGraphicsPanel extends JPanel {
         int aliensToGenerate = randomNumInRange(minAliens, maxAliens);  //how many aliens to generate this cycle
         for(int i=0; i<aliensToGenerate; i++) {
             int alienSize = randomNumInRange(1, 3);     //how big is the new alien
-            int location = randomNumInRange(0, gameScreenSize);     //where is it
-            Alien newAlien = new Alien(alienSize*30, location, gameScreenSize);   //create alien
+            int location = randomNumInRange(0, (int)gameScreenSize.getWidth());     //where is it
+            Alien newAlien = new Alien(alienSize*30, location);   //create alien
             add(newAlien);                      //add to screen
             aliensOnScreen.add(newAlien);       //add to list
         }

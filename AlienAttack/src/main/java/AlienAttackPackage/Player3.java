@@ -21,7 +21,7 @@ public class Player3 extends Player {
     int[] oval3 = {20, 11, 10, 10};
     int[] arc = {5, 10, 20, 20, 180, 180};
 
-    public Player3(int startSize, int screenSize) {
+    public Player3(int startSize, Dimension screenSize) {
         super(startSize, screenSize);
     }
 
