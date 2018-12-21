@@ -25,15 +25,11 @@ abstract class Player extends JComponent {
     }
 
     public int calcYStartCoord() {
-        return (int)(gameScreenSize.getWidth()-5-playerSize);
+        return (int)(gameScreenSize.getHeight()-5-playerSize);
     }
 
     public int getPlayerSize() {
         return playerSize;
-    }
-
-    public void setScreenSize(Dimension newSize) {
-        gameScreenSize = newSize;
     }
 
     /**

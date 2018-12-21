@@ -12,7 +12,6 @@ import java.io.*;
  */
 public class AlienAttackFrame extends JFrame {
     static final long serialVersionUID = 1L;
-    private Dimension gameFrameSize;
     private AlienGraphicsPanel graphicsPanel;
     private JButton startButton;
     private JButton pauseButton;
@@ -32,11 +31,10 @@ public class AlienAttackFrame extends JFrame {
     private int increaseSize;               //how many more aliens spawn when difficulty increases
     private int spawnInterval;              //how many cycles until new aliens are spawned
 
-    public AlienAttackFrame(AlienAttackMenu menu, int playerType) {
+    public AlienAttackFrame(AlienAttackMenu menu, int playerType, Rectangle frameSize) {
 
         //Housekeeping
         readConfigFile();
-        gameFrameSize = new Dimension(900, 900);
         setTitle("Alien Attack!");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         mainMenu = menu;
@@ -68,7 +66,7 @@ public class AlienAttackFrame extends JFrame {
         scoreLabel.setEditable(false);
 
         //Initialize graphics panel
-        graphicsPanel = new AlienGraphicsPanel(gameFrameSize, playerType);
+        graphicsPanel = new AlienGraphicsPanel(new Dimension(frameSize.width-32, frameSize.height-164), playerType);
 
         //Initialize upper info panel
         upperFields = new JPanel(new BorderLayout());
@@ -279,8 +277,6 @@ public class AlienAttackFrame extends JFrame {
 
             //Refresh game screen
             AlienAttackFrame.this.repaint();
-            Rectangle frameSize = new Rectangle(AlienAttackFrame.this.getBounds());
-            System.out.println(frameSize.height+" x "+frameSize.width);
         }
     }
 

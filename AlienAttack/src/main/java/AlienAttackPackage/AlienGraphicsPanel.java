@@ -196,7 +196,7 @@ public class AlienGraphicsPanel extends JPanel {
     }
 
     /**
-     * Tests all Aliens with all missiles to see if it's been hit
+     * Tests all Aliens with all missiles to see if they've been hit
      */
     public void aliensHit() {
         for(int i=0; i<missilesOnScreen.size(); i++) {
