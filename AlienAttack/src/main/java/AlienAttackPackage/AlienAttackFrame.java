@@ -155,7 +155,7 @@ public class AlienAttackFrame extends JFrame {
             } else if(c == 39) {    //right arrow key
                 commandQueue.add(1);    //1: RIGHT
             } else if(c==32) {      //spacebar: fire missile
-                commandQueue.add(2);    //2: FIRE
+                graphicsPanel.launchMissile();    //2: FIRE
             }
         }
     
@@ -228,9 +228,10 @@ public class AlienAttackFrame extends JFrame {
                 graphicsPanel.getPlayer().movePlayerLeft(playerSpeed);
             } else if(currCommand==1) {     //1: RIGHT
                 graphicsPanel.getPlayer().movePlayerRight(playerSpeed);
-            } else if(currCommand==2) {
-                graphicsPanel.launchMissile();  //2: FIRE
             }
+            // } else if(currCommand==2) {
+            //     graphicsPanel.launchMissile();  //2: FIRE
+            // }
 
 
             //ALIEN MOVEMENT - move all aliens down, generate more aliens
