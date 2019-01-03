@@ -9,7 +9,7 @@ public class AlienAttack {
     }
 
     private void createAndShowGUI() {
-        AlienAttackMenu aaFrame = new AlienAttackMenu();
+        MenuFrame aaFrame = new MenuFrame();
         aaFrame.setVisible(true);
     }
 

@@ -8,7 +8,7 @@ import java.util.Random;
  * Class for the actual graphics window in the game frame; handles all the repainting of elements and contains player and aliens
  * @author Rick Sear
  */
-public class AlienGraphicsPanel extends JPanel {
+public class GraphicsPanel extends JPanel {
     static final long serialVersionUID = 1L;
     static int LARGE = 90;              //pixel dimensions for each alien size (constants)
     static int MEDIUM = 60;
@@ -31,7 +31,7 @@ public class AlienGraphicsPanel extends JPanel {
     private Dimension gameScreenSize;         //screen size
     private int score;                  //score
 
-    public AlienGraphicsPanel(Dimension frameSize, int playerType) {
+    public GraphicsPanel(Dimension frameSize, int playerType) {
         score = 0;
         setPreferredSize(frameSize);
         aliensOnScreen = new ArrayList<Alien>();

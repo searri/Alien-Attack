@@ -10,7 +10,7 @@ import java.io.*;
  * Class for game menu screen; handles the leaderboard and calls instances of AlienAttackFrame
  * @author Rick Sear
  */
-public class AlienAttackMenu extends JFrame {
+public class MenuFrame extends JFrame {
     static final long serialVersionUID = 1L;
     private int gameScreenSize;
     private GridBagConstraints gc;
@@ -40,7 +40,7 @@ public class AlienAttackMenu extends JFrame {
     private Player2 p2Sample;
     private Player3 p3Sample;
 
-    public AlienAttackMenu() {
+    public MenuFrame() {
 
         //Initialization housekeeping
         gameScreenSize = 900;
@@ -264,9 +264,9 @@ public class AlienAttackMenu extends JFrame {
     public class StartListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            AlienAttackFrame attackFrame = new AlienAttackFrame(AlienAttackMenu.this, currPlayer, AlienAttackMenu.this.getBounds());
+            GameFrame attackFrame = new GameFrame(MenuFrame.this, currPlayer, MenuFrame.this.getBounds());
             attackFrame.setVisible(true);
-            AlienAttackMenu.this.setVisible(false);
+            MenuFrame.this.setVisible(false);
         }
     }
 
@@ -346,7 +346,7 @@ public class AlienAttackMenu extends JFrame {
                 //should never reach this point
                 System.out.println("Unknown object.");
             }
-            AlienAttackMenu.this.repaint();
+            MenuFrame.this.repaint();
         }
         
     }

@@ -9,19 +9,19 @@ import java.util.*;
  * Class for the overarching active game frame; this contains all the game elements
  * @author Rick Sear
  */
-public class AlienAttackFrame extends JFrame {
+public class GameFrame extends JFrame {
     static final long serialVersionUID = 1L;
-    private AlienGraphicsPanel graphicsPanel;
+    private GraphicsPanel graphicsPanel;
     private JButton startButton;
     private JButton pauseButton;
     private JButton endButton;
     private JPanel optionPanel;
     private Timer gameTimer;
-    private Queue<Integer> commandQueue;    //0 - left, 1 - right, 2 - fire, else - do nothing
+    private Queue<Integer> commandQueue;    //0 - left, 1 - right, else - do nothing
     private JTextField scoreBoard;
     private JTextField scoreLabel;
     private JPanel upperFields;
-    private AlienAttackMenu mainMenu;
+    private MenuFrame mainMenu;
 
     //CUSTOMIZABLE VALUES (read in via config file)
     private int cycleTime;                  //how often the game clock cycles (milliseconds)
@@ -30,7 +30,7 @@ public class AlienAttackFrame extends JFrame {
     private int increaseSize;               //how many more aliens spawn when difficulty increases
     private int spawnInterval;              //how many cycles until new aliens are spawned
 
-    public AlienAttackFrame(AlienAttackMenu menu, int playerType, Rectangle frameSize) {
+    public GameFrame(MenuFrame menu, int playerType, Rectangle frameSize) {
 
         //Housekeeping
         readConfigFile();
@@ -65,7 +65,7 @@ public class AlienAttackFrame extends JFrame {
         scoreLabel.setEditable(false);
 
         //Initialize graphics panel
-        graphicsPanel = new AlienGraphicsPanel(new Dimension(frameSize.width-32, frameSize.height-164), playerType);
+        graphicsPanel = new GraphicsPanel(new Dimension(frameSize.width-32, frameSize.height-164), playerType);
 
         //Initialize upper info panel
         upperFields = new JPanel(new BorderLayout());
@@ -90,19 +90,19 @@ public class AlienAttackFrame extends JFrame {
      */
     public void readConfigFile() {
         cycleTime = 50;
-        AlienGraphicsPanel.largeAlienSpeed = 5;
-        AlienGraphicsPanel.medAlienSpeed = 8;
-        AlienGraphicsPanel.smallAlienSpeed = 10;
+        GraphicsPanel.largeAlienSpeed = 5;
+        GraphicsPanel.medAlienSpeed = 8;
+        GraphicsPanel.smallAlienSpeed = 10;
         playerSpeed = 30;
         increaseInterval = 100;
         increaseSize = 1;
-        AlienGraphicsPanel.maxAliens = 2;
-        AlienGraphicsPanel.minAliens = 0;
-        AlienGraphicsPanel.largeAlienValue = 50;
-        AlienGraphicsPanel.medAlienValue = 25;
-        AlienGraphicsPanel.smallAlienValue = 10;
+        GraphicsPanel.maxAliens = 2;
+        GraphicsPanel.minAliens = 0;
+        GraphicsPanel.largeAlienValue = 50;
+        GraphicsPanel.medAlienValue = 25;
+        GraphicsPanel.smallAlienValue = 10;
         spawnInterval = 40;
-        AlienGraphicsPanel.missileSpeed = 10;
+        GraphicsPanel.missileSpeed = 10;
     }
 
     /**
@@ -159,7 +159,7 @@ public class AlienAttackFrame extends JFrame {
                 startButton.setEnabled(false);
                 pauseButton.setEnabled(true);
 
-                AlienAttackFrame.this.getContentPane().requestFocus();
+                GameFrame.this.getContentPane().requestFocus();
 
             //if PAUSE was selected
             } else if(obj == pauseButton) {
@@ -238,7 +238,7 @@ public class AlienAttackFrame extends JFrame {
                 if(graphicsPanel.getPlayer().shrinkPlayerSize()) {
                     gameTimer.stop();
                     JOptionPane.showMessageDialog(
-                        AlienAttackFrame.this, 
+                        GameFrame.this, 
                         "Your score: "+graphicsPanel.getScore()+"\n"
                         +"Elapsed time: "+(cyclesElapsed/20)+"s",
                         "You died!",
@@ -251,7 +251,7 @@ public class AlienAttackFrame extends JFrame {
             }
 
             //Refresh game screen
-            AlienAttackFrame.this.repaint();
+            GameFrame.this.repaint();
         }
     }
 
