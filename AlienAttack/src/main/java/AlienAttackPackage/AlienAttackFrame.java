@@ -4,7 +4,6 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import java.io.*;
 
 /**
  * Class for the overarching active game frame; this contains all the game elements
@@ -87,47 +86,23 @@ public class AlienAttackFrame extends JFrame {
     }
 
     /**
-     * Reads a text config file to set options for the game
+     * Initializes member variables
      */
     public void readConfigFile() {
-
-        try {
-            //temporary ArrayList to store settings
-            ArrayList <String> configSettings = new ArrayList<String>();
-            
-            //setup Scanner to read in config file from resources directory
-            Scanner fileReader = new Scanner(new File("config/settings.txt"));
-            while (fileReader.hasNextLine()) {
-                String line = fileReader.nextLine();
-                String[] data = line.split(" ");
-                configSettings.add(data[1]);    //only add the numerical values to the ArrayList
-            }
-            fileReader.close();
-
-            //initialize member variables to the values read in from config file
-            cycleTime = Integer.parseInt(configSettings.get(1));
-            AlienGraphicsPanel.largeAlienSpeed = Integer.parseInt(configSettings.get(2));
-            AlienGraphicsPanel.medAlienSpeed = Integer.parseInt(configSettings.get(3));
-            AlienGraphicsPanel.smallAlienSpeed = Integer.parseInt(configSettings.get(4));
-            playerSpeed = Integer.parseInt(configSettings.get(5));
-            increaseInterval = Integer.parseInt(configSettings.get(6));
-            increaseSize = Integer.parseInt(configSettings.get(7));
-            AlienGraphicsPanel.maxAliens = Integer.parseInt(configSettings.get(8));
-            AlienGraphicsPanel.minAliens = Integer.parseInt(configSettings.get(9));
-            AlienGraphicsPanel.largeAlienValue = Integer.parseInt(configSettings.get(10));
-            AlienGraphicsPanel.medAlienValue = Integer.parseInt(configSettings.get(11));
-            AlienGraphicsPanel.smallAlienValue = Integer.parseInt(configSettings.get(12));
-            spawnInterval = Integer.parseInt(configSettings.get(13));
-            AlienGraphicsPanel.missileSpeed = Integer.parseInt(configSettings.get(14));
-
-        //catch various exceptions that could occur, inform the user, and close the game
-        } catch(IOException e) {
-            JOptionPane.showMessageDialog(this, "Could not access config file. Exiting game.");
-            System.exit(0);
-        } catch(NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Problem reading config file. Exiting game.");
-            System.exit(0);
-        }
+        cycleTime = 50;
+        AlienGraphicsPanel.largeAlienSpeed = 5;
+        AlienGraphicsPanel.medAlienSpeed = 8;
+        AlienGraphicsPanel.smallAlienSpeed = 10;
+        playerSpeed = 30;
+        increaseInterval = 100;
+        increaseSize = 1;
+        AlienGraphicsPanel.maxAliens = 2;
+        AlienGraphicsPanel.minAliens = 0;
+        AlienGraphicsPanel.largeAlienValue = 50;
+        AlienGraphicsPanel.medAlienValue = 25;
+        AlienGraphicsPanel.smallAlienValue = 10;
+        spawnInterval = 40;
+        AlienGraphicsPanel.missileSpeed = 10;
     }
 
     /**
